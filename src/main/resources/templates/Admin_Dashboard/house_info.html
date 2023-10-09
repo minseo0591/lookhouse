@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  <title>매물 상세 소개</title>
+  <link rel="icon" href="/img/logo.png" />
+  <script src="https://kit.fontawesome.com/0bca6ce86d.js" crossorigin="anonymous">
+  </script>
+
+  <link rel="stylesheet" href="/css/footer.css" />
+  <link rel="stylesheet" href="/css/lecture_intro.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+
+  <style>
+    .fs-3:hover .bi-plus-circle {
+      color: blue;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
+    <div class="col-md-8 p-lg-4 mx-auto">
+
+      <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+        <div class="carousel-indicators">
+          <th:block th:each="housePicture, iterStat : ${housePictures}">
+            <button type="button" data-bs-target="#carouselExampleIndicators" th:data-bs-slide-to="${iterStat.index}" th:classappend="${iterStat.index == 0} ? 'active'"></button>
+          </th:block>
+        </div>
+
+        <div class="carousel-inner">
+          <div th:each="housePicture, iterStat : ${housePictures}" class="carousel-item" th:classappend="${iterStat.index == 0} ? 'active'">
+            <img th:src="|/images/${housePicture.save_name}|" class="d-block w-100" width="500" height="600">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+      &nbsp;&nbsp;
+      <div  th:each="house_list : ${house_list}">
+        <h3 th:if="${house_list.deal_type == '월세'}"><b>월세 [(${house_list.deposit})] / [(${house_list.m_price})]만원</b></h3>
+        <h3 th:if="${house_list.deal_type == '전세'}"><b>전세 [(${house_list.y_price})] 만원</b></h3>
+      </div>
+      <p class="lead fw-normal">
+        <!-- &#x2B50&#x2B50&#x2B50&#x2B50&#x2B50(5.0)<br>  -->
+      </p>
+      <p th:each="house_item : ${house_item}">판매자 : <b>[(${house_item.user_id})]</b></p>
+      <!-- <a class="btn btn-primary" href="#">수강 신청하기</a> -->
+    </div>
+    <div class="product-device shadow-sm d-none d-md-block"></div>
+    <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
+  </div>
+  <div>
+    <div class="row">
+      <div class="col-1"></div>
+      <div class="col-10">
+        <div class="rounded-3" style="height: 80px; background-color:rgb(71, 133, 240);">
+          <div class="text-center fw-bolder" style="color: white; padding-top: 10px;" th:each="house_detail: ${house_detail}" >매물을 소개하자면?<br>
+            ⭐ [(${house_detail.h_title})] ⭐
+          </div>
+        </div>
+        <br>
+        <ul style="list-style-type: none;">
+          <!-- 가격정보 시작 -->
+          <h2><b>가격정보</b></h2>
+          <br><br>
+          <li>
+            <h5>
+              <div class="d-flex" th:each="house_list : ${house_list}">
+                <div class="fs-6 justify-content-start" >가격</div>
+                <div class="justify-content-center fs-6" style="margin-left: 100px;">
+
+                  <b class="card-text fs-5" th:if="${house_list.deal_type == '월세'}">월세 [(${house_list.deposit})] / [(${house_list.m_price})]만원</b>
+                  <b class="card-text fs-5" th:if="${house_list.deal_type == '전세'}">전세 [(${house_list.y_price})] 만원 </b>
+                </div>
+              </div>
+              <hr>
+            </h5>
+
+            <h5>
+              <div class="d-flex">
+                <div class="fs-6 justify-content-start">관리비</div>
+                <div class="justify-content-center fs-6" style="margin-left: 83px;">
+                  <b>
+                    <p th:each="house_list : ${house_list}">
+                    매월 [(${house_list.m_cost})]만원
+                    </p>
+                  </b>
+                    <p th:each="house_addinfo : ${house_addinfo}">
+                      <span  th:if="${house_addinfo.m_internet == '인터넷'}">[(${house_addinfo.m_internet})]</span>
+                      <span  th:if="${house_addinfo.m_wiredtv == '유선TV'}">[(${house_addinfo.m_wiredtv})]</span>
+                      <span  th:if="${house_addinfo.m_cleaning == '청소비'}">[(${house_addinfo.m_cleaning})]</span>
+                      <span  th:if="${house_addinfo.m_etc == '기타'}">[(${house_addinfo.m_etc})]</span>
+                    <br>
+                    <br>
+                      <br>
+                      <b>
+                    별도 금액으로 부과되는 항목
+                      </b>
+                      <br><br>
+
+                    <span  th:if="${house_addinfo.m_watertax == '수도세'}">[(${house_addinfo.m_watertax})]</span>
+                    <span  th:if="${house_addinfo.m_citygas == '도시가스'}">[(${house_addinfo.m_citygas})]</span>
+                    <span  th:if="${house_addinfo.m_elec == '전기세'}">[(${house_addinfo.m_elec})]</span>
+
+
+                  </p>
+                </div>
+              </div>
+              <hr>
+            </h5>
+
+            <h5>
+              <div class="d-flex" th:each="house_addinfo : ${house_addinfo}">
+                <div class="fs-6 justify-content-start">주차</div>
+                <div class="justify-content-center fs-6" style="margin-left: 100px;">
+                  <b>[(${house_addinfo.parking})] &nbsp; 주차비 : [(${house_addinfo.parkingfee})]만원 </b>
+                  <sapn></sapn>
+                </div>
+              </div>
+              <hr>
+            </h5>
+
+            <h5>
+              <div class="d-flex">
+                <div class="fs-6 justify-content-start">한달
+                  <br>
+                  <p style="padding-top: 5px;">예상 주거비용</p>
+                </div>
+                <div class="justify-content-center fs-6" style="margin-left: 30px;" th:each="house_list : ${house_list}">
+                  <b>[(${house_list.total_m_cost})]만원</b>
+                  <br>
+                </div>
+              </div>
+            </h5>
+          </li>
+          <!-- 가격정보 끝 -->
+          <br><br><br><br>
+          <!-- 상세정보 시작 -->
+          <h2><b>상세정보</b></h2>
+          <br><br>
+          <li >
+            <h5>
+              <div class="d-flex"  th:each="house_list : ${house_list}">
+                <div class="fs-6 justify-content-start">방종류</div>
+                <div class="justify-content-center fs-6" style="margin-left: 85px;" >
+                  <b>[(${house_list.house_type})]
+                    </b>
+                </div>
+              </div>
+              <hr>
+            </h5>
+
+            <h5>
+              <div class="d-flex" th:each="house_info : ${house_info}">
+                <div class="fs-6 justify-content-start">해당층/건물층</div>
+                <div class="justify-content-center fs-6" style="margin-left: 30px;"><b>[(${house_info.b_floors})]층/[(${house_info.n_floors})]층</b></div>
+              </div>
+              <hr>
+            </h5>
+
+            <h5>
+              <div class="d-flex" th:each="house_info : ${house_info}">
+                <div class="fs-6 justify-content-start">전용/공급면적</div>
+                <div class="justify-content-center fs-6" style="margin-left: 30px;"><b>[(${house_info.supply_area2})]㎡ / [(${house_info.exclusive_area2})]㎡ </b></div>
+              </div>
+              <hr>
+            </h5>
+
+            <h5>
+              <div class="d-flex" th:each="house_info : ${house_info}">
+                <div class="fs-6 justify-content-start">난방종류</div>
+                <div class="justify-content-center fs-6" style="margin-left: 68px;"><b>[(${house_info.heating_type})]</b></div>
+              </div>
+              <hr>
+            </h5>
+
+            <h5>
+              <div class="d-flex" th:each="house_addinfo : ${house_addinfo}">
+                <div class="fs-6 justify-content-start">빌트인</div>
+                <div class="justify-content-center fs-6" style="margin-left: 84px;"><b>[(${house_addinfo.built_in})]</b></div>
+              </div>
+              <hr>
+            </h5>
+
+            <h5>
+              <div class="d-flex" th:each="house_addinfo : ${house_addinfo}">
+                <div class="fs-6 justify-content-start">주차</div>
+                <div class="justify-content-center fs-6" style="margin-left: 100px;"><b>[(${house_addinfo.parking})]</b></div>
+              </div>
+              <hr>
+            </h5>
+
+            <h5>
+              <div class="d-flex" th:each="house_info : ${house_info}">
+                <div class="fs-6 justify-content-start">엘리베이터</div>
+                <div class="justify-content-center fs-6" style="margin-left: 52px;" th:each="house_addinfo : ${house_addinfo}"><b>[(${house_addinfo.elevator})]</b></div>
+              </div>
+              <hr>
+            </h5>
+
+            <h5>
+              <div class="d-flex" th:each="house_addinfo : ${house_addinfo}">
+                <div class="fs-6 justify-content-start">베란다/발코니</div>
+                <div class="justify-content-center fs-6" style="margin-left: 29px;"><b>[(${house_addinfo.v_b})]</b></div>
+              </div>
+              <hr>
+            </h5>
+
+            <h5>
+              <div class="d-flex" th:each="house_info : ${house_info}">
+                <div class="fs-6 justify-content-start">입주가능일</div>
+                <div class="justify-content-center fs-6" style="margin-left: 50px;">
+                  <b>[(${house_info.move_in_date})]&nbsp;</b>
+                </div>
+              </div>
+              <hr>
+            </h5>
+
+
+
+          <br><br><br><br>
+          <li>
+            <h2><b>옵션</b></h2>
+            <br>
+            <div class="card text-dark bg-light mb-3" style="max-width: 60rem; padding-top: 10px; padding-bottom: 10px;" th:each ="house_option : ${house_option}" >
+              <div class="row row-cols-1 row-cols-md-4 g-4">
+                  <div class="col text-center" th:if="${house_option.induction == '인덕션'}">
+                    <img src="/img/induction_stove.png" class="rounded-0" alt="인덕션" style="width: 50px; height: 50px;">
+                    <div class="text-center"><b>[(${house_option.induction})]</b></div>
+                  </div>
+
+                  <div class="col text-center" th:if="${house_option.microwave == '전자레인지'}">
+                    <img src="/img/microwaves.png" class="rounded-0" alt="전자레인지" style="width: 50px; height: 50px;">
+                    <div class="text-center"><b>[(${house_option.microwave})]</b></div>
+                  </div>
+
+                  <div class="col text-center" th:if="${house_option.air_con == '에어컨'}">
+                    <img src="/img/air_conditioner.png" class="rounded-0" alt="에어컨" style="width: 50px; height: 50px;">
+                    <div class="text-center"><b>[(${house_option.air_con})]</b></div>
+                  </div>
+
+                  <div class="col text-center" th:if="${house_option.washing_machine == '세탁기'}">
+                    <img src="/img/washing_machine.png" class="rounded-0" alt="세탁기" style="width: 50px; height: 50px;">
+                    <div class="text-center"><b>[(${house_option.washing_machine})]</b></div>
+                  </div>
+
+                  <div class="col text-center" th:if="${house_option.tv == 'TV'}">
+                    <img src="/img/tv.png" class="rounded-0" alt="TV" style="width: 50px; height: 50px;">
+                    <div class="text-center"><b>[(${house_option.tv})]</b></div>
+                  </div>
+
+                  <div class="col text-center" th:if="${house_option.closet == '옷장'}">
+                    <img src="/img/closet.png" class="rounded-0" alt="옷장" style="width: 50px; height: 50px;">
+                    <div class="text-center"><b>[(${house_option.closet})]</b></div>
+                  </div>
+
+                  <div class="col text-center" th:if="${house_option.bed == '침대'}">
+                    <img src="/img/bed.png" class="rounded-0" alt="침대" style="width: 50px; height: 50px;">
+                    <div class="text-center"><b>[(${house_option.bed})]</b></div>
+                  </div>
+
+                  <div class="col text-center" th:if="${house_option.a_table == '책상'}">
+                    <img src="/img/desk.png" class="rounded-0" alt="책상" style="width: 50px; height: 50px;">
+                    <div class="text-center"><b>[(${house_option.a_table})]</b></div>
+                  </div>
+
+                  <div class="col text-center" th:if="${house_option.shoe_closet == '신발장'}">
+                    <img src="/img/shoe_rack.png" class="rounded-0" alt="신발장" style="width: 50px; height: 50px;">
+                    <div class="text-center"><b>[(${house_option.shoe_closet})]</b></div>
+                  </div>
+
+                  <div class="col text-center" th:if="${house_option.bidet == '비데'}">
+                    <img src="/img/bidet.png" class="rounded-0" alt="비데" style="width: 50px; height: 50px;">
+                    <div class="text-center"><b>[(${house_option.bidet})]</b></div>
+                  </div>
+
+                  <div class="col text-center" th:if="${house_option.gas_range == '가스레인지'}">
+                    <img src="/img/gas_range.png" class="rounded-0" alt="가스레인지" style="width: 50px; height: 50px;">
+                    <div class="text-center"><b>[(${house_option.gas_range})]</b></div>
+                  </div>
+
+                  <div class="col text-center" th:if="${house_option.refrig == '냉장고'}">
+                    <img src="/img/fridge.png" class="rounded-0" alt="냉장고" style="width: 50px; height: 50px;">
+                    <div class="text-center"><b>[(${house_option.refrig})]</b></div>
+                  </div>
+
+                  <div class="col text-center" th:if="${house_option.electronic_door == '전자도어락'}">
+                    <img src="/img/door_handle.png" class="rounded-0" alt="전자도어락" style="width: 50px; height: 50px;">
+                    <div class="text-center"><b>[(${house_option.electronic_door})]</b></div>
+                  </div>
+              </div>
+            </div>
+          </li>
+          <!-- 옵션 끝 -->
+          <br><br><br><br>
+          <!-- 위치 시작 -->
+          <li>
+            <h2><b>위치 및 주변시설</b></h2>
+            <br>
+            <p class="fw-bold">[(${road_address})]</p>
+            <br>
+            <div id="map"style="width: 900px; height: 450px;"></div>
+          </li>
+          <!-- 위치 끝 -->
+          <br><br><br><br>
+          <!-- 주변시설 시작 -->
+          <li>
+            <div class="card text-center">
+              <div class="card-header">
+                <ul class="nav nav-pills card-header-pills justify-content-center">
+                  <li class="nav-item">
+                    <a class="nav-link active" href="#">편의시설</a>
+                  </li>
+<!--                  <li class="nav-item">-->
+<!--                    <a class="nav-link" href="#">학군정보</a>-->
+<!--                  </li>-->
+                </ul>
+              </div>
+              <div class="card-body d-flex justify-content-evenly">
+                <img src="/img/sb.png" class="rounded-circle bg-info bg-opacity-25" alt="#"
+                  style="width: 50px; height: 50px;">
+
+                <img src="/img/store.png" class="rounded-circle bg-warning bg-opacity-50" alt="#"
+                  style="width: 50px; height: 50px;">
+
+                <img src="/img/coffee.png" class="rounded-circle bg-success bg-opacity-25" alt="#"
+                  style="width: 50px; height: 50px;">
+
+                <img src="/img/bank.png" class="rounded-circle bg-secondary bg-opacity-25" alt="#"
+                  style="width: 50px; height: 50px;">
+              </div>
+              <div class="d-flex justify-content-evenly fs-6">
+                <p style="margin-left: 25px;">&nbsp;지하철</p>
+                <p style="margin-right: 25px;">&nbsp;&nbsp;&nbsp;편의점</p>
+                <p style="margin-right: 25px;">카페&nbsp;&nbsp;</p>
+                <p style="margin-right: 27px;">은행&nbsp;&nbsp;</p>
+              </div>
+            </div>
+          </li>
+          <!-- 주변시설 끝 -->
+
+          <br><br><br><br>
+          <h2><b>상세정보</b></h2>
+          <br><br>
+          <!-- 상세정보 시작 -->
+          <li>
+            <div class="card text-dark bg-light mb-3" style="max-width: 60rem;" th:each="house_detail : ${house_detail}" >
+              <div class="card-body">
+                <h5 class="card-title fw-bolder">[(${house_detail.h_title})]</h5>
+                <br>
+                <p class="card-text">
+                   <textarea class="form-control" id="h_content" name="h_content" th:text = "${house_detail.h_content}"
+                             style="width: 100%; height: 300px;"></textarea>
+                </p>
+              </div>
+            </div>
+          </li>
+          <!-- 상세정보 끝 -->
+          <!-- 총평리뷰 시작 -->
+          <!-- <hr>
+          <div>
+            <h4><b>총평점</b></h2>
+              <p class="fw-light">총 48개</p>
+          </div>
+
+          <div class="card mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+              <div class="col-md-4">
+                <div style="margin-top: 60px;">
+                  <div class="fs-1 fw-bolder" style="text-align: center;">5.0
+                    <div class="fs-5">&#x2B50&#x2B50&#x2B50&#x2B50&#x2B50</div>
+                    <div class="fs-6">48개의 평점</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-8">
+                <div class="card-body" style="margin-top: 5px;">
+                  <div class="card-text">5점
+                    <div class="progress">
+                      <div class="progress-bar" style="width: 95%;">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-text">4점
+                    <div class="progress">
+                      <div class="progress-bar" style="width: 5%;">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="card-text">3점
+                    <div class="progress">
+                      <div class="progress-bar" style="width: 0%;">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-text">2점
+                    <div class="progress">
+                      <div class="progress-bar" style="width: 0%;">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-text">1점
+                    <div class="progress">
+                      <div class="progress-bar" style="width: 0%;">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-2">
+            <div class="card-header bg-light">
+              <i class="fa fa-comment fa"></i>&nbsp;리뷰 남기기
+            </div>
+            <div class="card-body">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <div class="form-inline mb-2">
+
+                  </div>
+                  <form name="myform" id="myform" method="#" action="#">
+                    <fieldset>
+                      <legend>별점을 선택해주세요</legend>
+                      <input type="radio" name="rating" value="5" id="rate1"><label for="rate1">⭐</label>
+                      <input type="radio" name="rating" value="4" id="rate2"><label for="rate2">⭐</label>
+                      <input type="radio" name="rating" value="3" id="rate3"><label for="rate3">⭐</label>
+                      <input type="radio" name="rating" value="2" id="rate4"><label for="rate4">⭐</label>
+                      <input type="radio" name="rating" value="1" id="rate5"><label for="rate5">⭐</label>
+                    </fieldset>
+                  </form>
+                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                  <button type="button" class="btn btn-dark mt-3">등록</button>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <hr>
+
+          <div class="card mb-2">
+            <div class="card-header bg-light">
+              <i class="fa fa-comment fa"></i> 리뷰 댓글
+            </div>
+            <div class="card-body">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <div class="form-inline mb-2">
+                    <label for="replyId" class="fw-bolder"><i class="fa fa-user-circle-o fa-2x"></i><span
+                        style="color:gray;">&nbsp; 공선환</span>
+                      <div class="fs-6">&#x2B50&#x2B50&#x2B50&#x2B50&#x2B50 <b>5</b></div>
+                    </label>
+                  </div>
+                  <div class="fw-bolder">
+                    1인 가구를 위한 원룸 매물입니다!!
+                  </div>
+                  <div class="fw-bolder" style="color:gray; padding-top: 10px;">
+                    2023-04-10 ∙ <a>답글 작성</a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div> -->
+          <!-- 총평리뷰 끝 -->
+          <br><br>
+          <div class="d-grid gap-2 col-6 mx-auto">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                    onclick= "window.close()">닫기</button>
+            </div>
+          <br><br>
+        </ul>
+      </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+    integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+    crossorigin="anonymous"></script>
+
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=743bd643ee6f33b7f2800e2b1fc9802e&libraries=services"></script>
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a6d74f730cd677912a0b0ccd2975e57d&libraries=services"></script>
+<script th:inline="javascript">
+var address=[[${road_address}]];
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+    mapOption = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+    };
+
+// 지도를 생성합니다
+var map = new kakao.maps.Map(mapContainer, mapOption);
+
+// 주소-좌표 변환 객체를 생성합니다
+var geocoder = new kakao.maps.services.Geocoder();
+
+// 주소로 좌표를 검색합니다
+geocoder.addressSearch(address, function(result, status) {
+
+    // 정상적으로 검색이 완료됐으면
+     if (status === kakao.maps.services.Status.OK) {
+
+        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+        // 결과값으로 받은 위치를 마커로 표시합니다
+        var marker = new kakao.maps.Marker({
+            map: map,
+            position: coords
+        });
+
+        // 인포윈도우로 장소에 대한 설명을 표시합니다
+        var infowindow = new kakao.maps.InfoWindow({
+            content: '<div style="width:150px;text-align:center;padding:6px 0;">매물 위치</div>'
+        });
+        infowindow.open(map, marker);
+
+        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+        map.setCenter(coords);
+    }
+});
+</script>
+</body>
+
+</html>

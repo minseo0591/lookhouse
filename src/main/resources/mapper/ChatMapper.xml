@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.thishouse.mapper.ChatMapper">
+   <insert id="createMessage">
+       insert into chtmsg (roomid,sender,msg,msgdate,msgchk) values (#{roomId},#{sender}, #{msg},now(),#{msgchk})
+   </insert>
+
+    <select id="findAllMessage" resultType="com.example.thishouse.domain.Message">
+        select *
+        from chtmsg
+        where roomid=#{roomId};
+    </select>
+
+
+    <!-- 읽음, 읽지 않음 여부 확인 -->
+    <update id="messageStatus">
+        update chtmsg
+        set msgchk =1
+        where   roomid = #{roomId} AND sender = #{sender} AND msgchk= 0
+    </update>
+</mapper>

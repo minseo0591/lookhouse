@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.thishouse.mapper.ContractMapper">
+
+    <insert id="contract_request" parameterType="com.example.thishouse.domain.contract.Contract">
+        insert into contract (lessoer_idx,tenant_idx,house_num,contract_state,lease_term_begin,lease_term_end,contract_date,day_of_delivery,special_provisions,deposit,down_payment,balance,balance_deadline,deal_type,house_type,road_address,detail_address,exclusive_area2,supply_area2,middle_payment_deadline,middle_payment)
+        values(#{lessoer_idx},#{tenant_idx},#{house_num},"계약요청",#{lease_term_begin},#{lease_term_begin},now(),#{day_of_delivery},#{special_provisions},#{deposit},#{down_payment},#{balance},#{balance_deadline},#{deal_type},#{house_type},#{road_address},#{detail_address},#{exclusive_area2},#{supply_area2},#{middle_payment_deadline},#{middle_payment})
+    </insert>
+
+    <insert id="tenant_info" parameterType="com.example.thishouse.domain.contract.Tenant">
+        insert into tenant(house_num,user_id,tenant_name,tenant_resident_number_f,tenant_resident_number_b,tenant_phone,road_address,detail_address)
+        values(#{house_num},#{user_id},#{tenant_name},#{tenant_resident_number_f},#{tenant_resident_number_b},#{tenant_phone},#{road_address},#{detail_address})
+    </insert>
+
+    <insert id="lessoer_info" parameterType="com.example.thishouse.domain.contract.Lessoer">
+        insert into lessoer(house_num,user_id,lessoer_name,lessoer_resident_number_f,lessoer_resident_number_b,lessoer_phone,l_road_address,l_detail_address)
+        values(#{house_num},#{user_id},#{lessoer_name},#{lessoer_resident_number_f},#{lessoer_resident_number_b},#{lessoer_phone},#{l_road_address},#{l_detail_address})
+    </insert>
+
+    <select id="get_lessoer" resultType="integer">
+        select lessoer_idx
+        from lessoer
+        where house_num = #{houseNum}
+    </select>
+
+    <select id="get_tenant" resultType="integer">
+        select tenant_idx
+        from tenant
+        where house_num = #{houseNum}
+    </select>
+
+</mapper>

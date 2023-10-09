@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.thishouse.mapper.BoardMapper">
+
+    <select id="select_board_list" resultType="com.example.thishouse.domain.community.Community">
+        select *
+        from community
+        ORDER BY community_num
+    </select>
+    <!-- 페이징 작업-->
+    <select id="bd_list" parameterType="com.example.thishouse.domain.community.Community" resultType="com.example.thishouse.domain.community.Community">
+        select * from community Order by community_num desc LIMIT #{recordCountPerPage} OFFSET ${firstIndex}
+    </select>
+    <select id="bd_listCnt" resultType="int"> select count(*) from community
+    </select>
+    <!-- 게시판 등록-->
+    <insert id="insert_board" parameterType="com.example.thishouse.domain.community.Community">
+        insert into community (community_title,user_id,community_contents,community_date,community_hits)
+        values(#{community_title},#{user_id},#{community_contents},now(),0);
+    </insert>
+
+    <insert id="insert_reply" parameterType="com.example.thishouse.domain.community.Community_reply">
+        insert into community_reply(community_num,user_id,reply_contents,reply_date)
+        values(#{community_num},#{user_id},#{reply_contents},now())
+    </insert>
+
+    <!--게시판 상세조회-->
+    <select id="view_board" resultType="com.example.thishouse.domain.community.Community">
+        select *
+        from community
+        where community_num = #{community_num}
+    </select>
+
+    <select id="view_reply" resultType="com.example.thishouse.domain.community.Community_reply">
+        select *
+        from community_reply
+        where community_num = ${community_num}
+        order by reply_date desc;
+    </select>
+
+    <!-- 게시판 삭제처리 -->
+    <delete id="delete_board">
+        delete from community
+        where community_num = #{community_num}
+    </delete>
+
+    <!-- 게시판 수정처리 -->
+    <update id="update_board">
+        update community
+        SET
+            community_title = #{community_title},
+            user_id = #{user_id},
+            community_contents = #{community_contents},
+            community_date = now()
+        where
+            community_num = #{community_num}
+
+    </update>
+
+    <delete id="delete_reply_with_board">
+        delete from community_reply
+        where community_num = #{community_num}
+    </delete>
+
+    <delete id="delete_reply">
+        delete from community_reply
+        where reply_num = #{reply_num}
+    </delete>
+
+    <!-- 게시판 조회수 -->
+    <update id="update_board_hitCount">
+        update community
+        SET
+            community_hits=community_hits+1
+        where
+            community_num=#{community_num}
+    </update>
+
+    <!--게시판 검색 페이징 -->
+    <select id="bd_list_search" parameterType="com.example.thishouse.domain.community.Community" resultType="com.example.thishouse.domain.community.Community">
+        select *
+        from community
+        where ${search_name} like CONCAT('%',#{search_content},'%')
+        order by community_num desc
+        limit ${recordCountPerPage} offset ${firstIndex}
+    </select>
+    <select id="bd_list_search_Cnt" parameterType="com.example.thishouse.domain.community.Community" resultType="int">
+        select count(*) from community where ${search_name} like CONCAT('%',#{search_content},'%')
+
+    </select>
+
+
+
+
+
+
+</mapper>

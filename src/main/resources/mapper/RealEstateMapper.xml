@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.thishouse.mapper.RealEstateMapper">
+    <!--qry-->
+    <insert id="insert_house_item">
+        insert into house_item(house_num,user_id,regist_time , approval) values(#{house_num}, #{user_id},now(),0)
+    </insert>
+
+    <insert id="insert_house_type">
+        insert into house_type(house_num,house_type)
+        values(#{house_num},#{house_type})
+    </insert>
+
+    <insert id="insert_house_location">
+        insert into house_location(house_num,road_num,road_address,detail_address,latitude,longitude)
+        values(#{house_num},#{road_num},#{road_address},#{detail_address},#{latitude},#{longitude})
+    </insert>
+
+    <insert id="insert_house_deal">
+        insert into house_deal(house_num,deal_type,m_price,y_price,deposit)
+        values(#{house_num},#{deal_type},#{m_price},#{y_price},#{deposit})
+    </insert>
+
+    <insert id="insert_house_info">
+        insert into house_info (house_num,supply_area1,supply_area2,exclusive_area1,exclusive_area2, b_floors, n_floors,heating_type,move_in_date)
+        values(#{house_num},#{supply_area1},#{supply_area2},#{exclusive_area1},#{exclusive_area2},#{b_floors},#{n_floors},#{heating_type},#{move_in_date})
+    </insert>
+
+    <insert id="insert_house_addinfo">
+        insert into house_addinfo(house_num,m_cost_type,m_cost,m_internet,m_wiredtv,m_cleaning,m_watertax,m_citygas,m_elec, m_etc,elevator,v_b,parking,parkingfee,built_in,structure)
+        values(#{house_num},#{m_cost_type},#{m_cost},#{m_internet},#{m_wiredtv},#{m_cleaning},#{m_watertax},#{m_citygas},#{m_elec},#{m_etc},#{elevator},#{v_b},#{parking},#{parkingfee},#{built_in},#{structure})
+    </insert>
+
+    <insert id="insert_house_option">
+        insert into house_option
+        (house_num,induction ,microwave ,air_con,washing_machine,tv ,closet ,bed,a_table,shoe_closet,bidet ,gas_range,refrig,electronic_door)
+        values(#{house_num},#{induction},#{microwave},#{air_con},#{washing_machine},#{tv},#{closet},#{bed},#{a_table},#{shoe_closet},#{bidet},#{gas_range},#{refrig},#{electronic_door})
+
+    </insert>
+
+    <insert id="insert_house_detail">
+        insert into house_detail(house_num,h_title,h_content )
+        values(#{house_num},#{h_title},#{h_content})
+    </insert>
+
+    <insert id="saveAll" parameterType="java.util.List">
+            insert into house_picture(house_num,original_name,save_name)
+            values (#{house_num},#{original_name},#{save_name})
+    </insert>
+
+    <insert id="insert_house_list">
+        insert into house_list(house_num,house_type,road_address,deal_type,deposit,m_price,y_price,b_floors,n_floors,m_cost,m_cost_type,h_title,parkingfee,total_m_cost,hits,exclusive_area2,approval)
+        values(#{house_num},#{house_type},#{road_address},#{deal_type},#{deposit},#{m_price},#{y_price},#{b_floors},#{n_floors},#{m_cost},#{m_cost_type},#{h_title},#{parkingfee},#{m_cost} + #{parkingfee},0,#{exclusive_area2},0)
+    </insert>
+
+    <select id="sequence" resultType="int">
+        select count(*)
+        from house_item
+    </select>
+
+    <select id="view_house_list" resultType="java.util.HashMap">
+        select *
+        from house_list a, (select *
+        from house_picture
+        where house_picture_num in (select max(house_picture_num) from house_picture group by house_num)) b
+        where a.house_num = b.house_num and a.approval = 1
+        order by house_list_num desc
+        limit 6;
+    </select>
+
+    <insert id="insert_picture" parameterType="com.example.thishouse.domain.house.House_picture">
+        INSERT INTO house_picture (house_num, original_name, save_name, size, filePath)
+        VALUES (#{house_num}, #{original_name}, #{save_name}, #{size}, #{filePath})
+    </insert>
+
+    <!-- 집 사진 가져오기 -->
+    <select id="getHousePictures" resultType="com.example.thishouse.domain.house.House_picture">
+        SELECT * FROM house_picture;
+    </select>
+
+    <select id="view_house_list_one" resultType="com.example.thishouse.domain.house.House_list">
+        select *
+        from house_list
+        where house_num = #{house_num}
+    </select>
+
+    <select id="list_house_item" resultType="com.example.thishouse.domain.house.House_item">
+        select *
+        from house_item
+        where house_num = #{house_num}
+    </select>
+
+    <select id="add_info_list" resultType="com.example.thishouse.domain.house.House_addinfo">
+        select *
+        from house_addinfo
+        where house_num = #{house_num}
+    </select>
+
+    <select id="house_detail_list" resultType="com.example.thishouse.domain.house.House_detail">
+        select *
+        from house_detail
+        where house_num = #{house_num}
+    </select>
+
+    <select id="house_option_list" resultType="com.example.thishouse.domain.house.House_option">
+        select *
+        from house_option
+        where house_num = #{house_num}
+    </select>
+
+    <select id="house_type_list" resultType="com.example.thishouse.domain.house.House_type">
+        select *
+        from house_type
+        where house_num = #{house_num}
+    </select>
+
+    <select id="house_info_list" resultType="com.example.thishouse.domain.house.House_info">
+        select *
+        from house_info
+        where house_num = #{house_num}
+    </select>
+
+    <select id="road_address" resultType="String">
+        select road_address
+        from house_location
+        where house_num = #{house_num}
+    </select>
+
+    <select id="house_picture_list" resultType="com.example.thishouse.domain.house.House_picture">
+        select *
+        from house_picture
+        where house_num = #{house_num}
+    </select>
+
+    <select id="house_list_pg" resultType="java.util.HashMap">
+        select *
+        from house_list a, (select *
+                            from house_picture
+                            where house_picture_num in (select max(house_picture_num) from house_picture group by house_num)) b
+        where a.house_num = b.house_num and a.approval = 1
+        order by house_list_num desc
+        LIMIT #{recordCountPerPage} OFFSET ${firstIndex}
+    </select>
+
+    <select id="house_list_pg_cnt" resultType="int">
+        select count(*)
+        from house_list a, (select *
+                            from house_picture
+                            where house_picture_num in (select max(house_picture_num) from house_picture group by house_num)) b
+        where a.house_num = b.house_num and a.approval = 1
+        order by house_list_num desc
+    </select>
+
+    <select id="house_search_pg" resultType="java.util.HashMap">
+        select *
+        from house_list a, (select *
+                            from house_picture
+                            where house_picture_num in (select max(house_picture_num) from house_picture group by house_num)) b
+        where a.house_num = b.house_num and a.approval = 1 and a.road_address like CONCAT('%',#{search_content},'%')
+        order by house_list_num desc
+            LIMIT #{recordCountPerPage} OFFSET ${firstIndex}
+    </select>
+
+    <select id="house_search_pg_cnt" resultType="int">
+        select count(*)
+        from house_list a, (select *
+                            from house_picture
+                            where house_picture_num in (select max(house_picture_num) from house_picture group by house_num)) b
+        where a.house_num = b.house_num and a.approval = 1 and a.road_address like CONCAT('%',#{search_content},'%')
+    </select>
+
+    <update id="house_hit_coount">
+        update house_list
+        SET
+            hits=hits+1
+        where
+            house_num=#{houseNum}
+    </update>
+
+    <select id="deal_type" resultType="String">
+        select deal_type
+        from house_deal
+        where house_num = #{houseNum}
+    </select>
+
+    <select id="house_location" resultType="com.example.thishouse.domain.house.House_location">
+        select *
+        from house_location
+        where house_num = #{houseNum}
+    </select>
+
+    <select id="house_type" resultType="String">
+        select house_type
+        from house_list
+        where house_num = #{houseNum}
+    </select>
+
+</mapper>

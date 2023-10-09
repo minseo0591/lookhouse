@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>footer</title>
+</head>
+<body>
+<footer class="footer mt-auto py-3">
+  <div class="container">
+    <div class="wrapper">
+      <div class="footer-bottom">
+        <div class="footer-bottom-left">
+          <div class="footer-info-top">
+              <span>
+                <a th:href="@{/main}" class="text-light">(주)이집봐라</a>
+              </span>
+            <span>
+                <a href="#" class="text-decoration-none">개인정보취급방침</a>
+              </span>
+            <span>
+                <a href="#" class="text-decoration-none">이용약관</a>
+              </span>
+          </div>
+          <div class="footer-info-bottom">
+            <div class="info-dropdown">
+              <span>(주)이집봐라 | </span>
+              <span>팀명: 공김정 | </span>
+              <span>
+                  사업자번호: 012-34-56789
+                  <a href="#" target="_blank" class="text-decoration-none text-white">사업자 정보 확인</a>
+                </span>
+              <br>
+              <span>통신판매업: 2023-경민대학교-23 | </span>
+              <span>개인정보보호책임자: 공선환, 김재호, 정성진 | </span>
+              <span>이메일: <a href="#" class="text-decoration-none text-white">tjsghks7878@kyungmin.ac.kr</a></span>
+              <br>
+              <span>주소: 경기도 의정부시 서부로 545 경민대학교 효행관 405호</span>
+            </div>
+            ©KongKimJeong. ALL RIGHTS RESERVED
+          </div>
+          <br>
+          <div>
+            <button class="btn btn-primary btn-sm">자주묻는 질문</button>
+<!--            <button class="btn btn-primary btn-sm" onclick="@{/inquire}">1:1 문의</button>-->
+            <a th:href="@{'/test2_inquire?user_id=' + ${session.user_id}}"><button class="btn btn-primary btn-sm">1:1문의</button></a>
+          </div>
+        </div>
+        <div class="footer-bottom-right">
+          <a href="#" class="text-decoration-none text-dark" id="#">
+            K
+          </a>
+          <a href="#" class="text-decoration-none text-dark" id="#">
+            Y
+          </a>
+          <a href="#" class="text-decoration-none text-dark" id="#">
+            U
+          </a>
+          <a href="#" class="text-decoration-none text-dark" id="#">
+            N
+          </a>
+          <a href="#" class="text-decoration-none text-dark" id="#">
+            G
+          </a>
+          <a href="#" class="text-decoration-none text-dark" id="#">
+            M
+          </a>
+          <a href="#" class="text-decoration-none text-dark" id="#">
+            I
+          </a>
+          <a href="#" class="text-decoration-none text-dark" id="#">
+            N
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

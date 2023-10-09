@@ -1,0 +1,148 @@
+/* 장바구니 body */
+div#backbody {
+    background-color: #f5f5f0;
+    font-size: 13pt;
+    min-width: 1480px;
+    width: 100%;
+    padding: 50px 0;
+}
+/* 전체 div */
+#frame { 
+    width: 80%;
+    margin: 0 auto;
+    padding: 50px 50px;
+    background-color: #fff;
+}
+/* 페이지 맨위 header말구 장바구니 홈>장바구니 */
+#frmae2 {
+    border-bottom: solid 1px #e0e0eb;
+    padding: 20px 0;
+}
+/* 홈> 장바구니 */
+.home {
+    float: right;
+    clear: both;
+}
+/* 계산 테이블 */
+table.calculation1 {
+    clear: both;
+    border: solid 1px #e0e0eb;
+    border-collapse: collapse;
+    background-color: #f5f5f0;
+    width: 100%;
+    font-size: 10pt;
+}
+/* 계산 테이블 - 제목 */
+table.calculation1 th {
+    border: solid 1px #e0e0eb;
+    padding: 10px 0;
+    text-align: center;
+}
+/* 계산 테이블 - 내용 */
+table.calculation1 td {
+    border: solid 1px #e0e0eb;
+    text-align: center;
+}
+/* 총 결제예정금액 테이블 */
+table.calculation2 {
+    border:  solid 1px #e0e0eb;
+    border-collapse: collapse;
+    background-color: #f5f5f0;
+    width: 100%;
+    font-size: 10pt;
+}
+/* 총 결제예정금액 테이블 - 제목 */
+table.calculation2 th {
+    border: solid 1px #e0e0eb;
+    text-align: center;
+}
+/* 총 결제예정금액 테이블 - 내용 */
+table.calculation2 td {
+    border: solid 1px #e0e0eb;
+    text-align: center;
+}
+/* calculation2 테이블 - 가격 ~원 */
+.price {
+    font-size: 20pt;
+    font-weight: bold;
+}
+/* 이용약관 ol태크 - li */
+.lifont {
+    font-size: 10pt;
+    color: gray;
+}
+/* 배송정보 테이블 */
+.delivery {
+    border: solid 1px gray;
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 12pt;
+}
+table.delivery th, td {
+    border: solid 1px #e0e0eb;
+    padding: 12px 10px;
+}
+/* 배송정보 테이블 td */
+.deliverytd {
+    font-size: 12pt;
+    background-color: #f5f5f0;
+}
+/* 결제카드 */
+.payArea {
+    height: 218px;
+    position: relative;
+    padding: 0 245px 0 0;
+    border: 1px solid #777;
+    color: #353535;
+    line-height: 1.5;
+}
+.payment  {
+    border-right: solid 1px gray;
+    float: left;
+    width: 100%;
+    height: 100%;
+}
+
+.total {
+    float: right;
+    width: 240px;
+    margin: 0 -240px 0 0;
+    text-align: right;
+    background: #fbfafa;
+    font-size: 11pt;
+}
+/* ---------------------- */
+
+/* bootstrp 버튼 */
+.btn {
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    font-size: 13px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.default {
+    background-color: #264d73;
+    border: solid 1px gray;
+    color: #fff;
+}
+.default:hover {
+    background: #ddd;
+}
+.backBtn {
+    background: #fff;
+    border: solid 1px gray;
+}
+/* 선택상품 삭제, 해외배송 장바구니로 이동 float */
+.btnfloat{
+    float: left;
+}
+/* 선택상품 장바구니,견적서 출력 float */
+.btnfloat2 {
+    float: right;
+}
+/* 혹시몰라서 clear 하나 줌 */
+.clearboth {
+    clear: both;
+}

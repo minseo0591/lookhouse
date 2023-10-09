@@ -1,0 +1,51 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.0.5'
+	id 'io.spring.dependency-management' version '1.1.0'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.0'
+	implementation group: 'nz.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', version: '3.2.1'
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'com.mysql:mysql-connector-j'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	implementation 'commons-io:commons-io:2.11.0'    /* Apache commons-io */
+	implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'
+	implementation 'org.springframework.boot:spring-boot-devtools'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
+
+	//websocket 추가하기
+	implementation 'com.google.code.gson:gson:2.10.1'
+	implementation 'org.webjars:stomp-websocket:2.3.3-1'
+	implementation 'org.webjars:bootstrap:5.2.3'
+	implementation 'org.json:json:20180813'
+	implementation 'org.webjars:sockjs-client:1.1.2'
+
+	//mail
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

@@ -1,0 +1,117 @@
+footer {
+  background-color: #000000;
+}
+
+footer .wrapper {
+  max-width: 1152px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+footer .wrapper .footer-top {
+  display: flex;
+  justify-content: space-between;
+  padding: 32px 20px;
+  border-bottom: 1px solid #444;
+}
+
+footer .wrapper .footer-top .menu-list {
+  margin-right: 20px;
+}
+
+footer .wrapper .footer-top .menu-list .menu-title {
+  font-weight: 700;
+  font-size: 14px;
+  color: #eee;
+  padding: 16px 0;
+  line-height: 1.43;
+}
+
+footer .wrapper .footer-top .menu-list .menu-items {
+  display: flex;
+  flex-direction: column;
+  max-height: 118px;
+}
+
+footer .wrapper .footer-top .menu-list .menu-items .menu-item {
+  margin-bottom: 7px;
+  color: #bdbdbd;
+  font-size: 14px;
+  line-height: 1.43;
+}
+
+footer .wrapper .footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  padding: 32px 20px;
+}
+
+footer .wrapper .footer-bottom .footer-bottom-left {
+  display: flex;
+  flex-direction: column;
+}
+
+footer .wrapper .footer-bottom .footer-bottom-left .footer-info-top {
+  margin-bottom: 8px;
+}
+
+footer
+  .wrapper
+  .footer-bottom
+  .footer-bottom-left
+  .footer-info-top
+  span:nth-child(2)::before,
+footer
+  .wrapper
+  .footer-bottom
+  .footer-bottom-left
+  .footer-info-top
+  span:nth-child(3)::before {
+  color: #bdbdbd;
+  margin: 0 8px;
+  content: "|";
+  display: inline-block;
+  font-size: 12px;
+}
+
+footer .wrapper .footer-bottom .footer-bottom-left .footer-info-top span a {
+  color: #bdbdbd;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+footer .wrapper .footer-bottom .footer-bottom-left .footer-info-bottom {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #bdbdbd;
+}
+
+footer
+  .wrapper
+  .footer-bottom
+  .footer-bottom-left
+  .footer-info-bottom
+  .info-dropdown {
+  max-height: 200px;
+  margin-bottom: 8px;
+}
+
+footer .wrapper .footer-bottom .footer-bottom-right {
+  margin-left: 20px;
+  width: 230px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+footer .wrapper .footer-bottom .footer-bottom-right a {
+  width: 34px;
+  height: 34px;
+  border-radius: 100%;
+  background-color: #bdbdbd;
+  text-align: center;
+  line-height: 34px;
+  font-weight: 700;
+}

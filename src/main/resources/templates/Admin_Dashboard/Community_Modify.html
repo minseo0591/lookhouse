@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/logo_icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/logo_icon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/logo_icon.png">
+    <link rel="manifest" href="https://i.morioh.com/favicon/site.webmanifest">
+    <link rel="mask-icon" href="/img/logo_icon.png" color="#262521">
+    <link rel="shortcut icon" href="/img/logo_icon.png">
+    <meta name="msapplication-TileColor" content="#faa700">
+    <meta name="theme-color" content="#ffffff">>
+
+    <meta property="og:title" content="Morioh Responsive Template with Bootstrap 4, HTML5 and Vue.js">
+    <meta property="og:image" content="logo_icon.png">
+    <meta property="og:description" content="Morioh Theme is Bootstrap responsive template free download">
+    <meta property="og:image:width" content="1280">
+    <meta property="og:image:height" content="720">
+
+    <title>관리자 페이지</title>
+    <meta itemprop="description" content="Morioh Theme is Bootstrap responsive template free download">
+    <meta itemprop="image" content="/img/logo_icon.png">
+
+    <meta name="description" content="Morioh Theme is Bootstrap responsive template free download">
+    <meta name="image" content="/img/logo_icon.png">
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.4.0/css/perfect-scrollbar.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@4.7.95/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/morioh.css">
+
+    <script>
+        $('#btnCheck').click(function() {
+            if ($('#user_id').val() != '') {
+                $.ajax({
+                    type : 'GET',
+                    url : 'http://localhost:8082/comment_filter?reply_num='+$('#reply_num').val(),
+                    success : function(result) {
+                        if (result == '0') {
+                            $('#result').text('사용 가능한 아이디입니다.');
+                        } else {
+                            $('#result').text('이미 사용중인 아이디입니다.');
+                        }
+                    },
+                    error : function(a, b, c) {
+                        console.log(a, b, c);
+                    }
+                });
+            } else {
+                alert('아이디를 입력하세요.');
+                $('#user_id').focus();
+            }
+        });
+    </script>
+</head>
+
+<body class="menubar-enabled navbar-top-fixed">
+
+<!-- header 시작 -->
+<header th:replace="~{header/Admin_header}"></header>
+<!-- header 끝 -->
+        <div class="container-fluid mt-15">
+
+            <div class="card mb-15">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="food-card">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="row no-gutters">
+                                            <div class="col-12">
+                                                <div class="table-responsive">
+                                                    <h5 style="text-align:center"><b>커뮤니티 관리</b></h5>
+                                                  <br>
+                                                    <form th:action="@{board_update_admin}" method="post">
+                                                        <div class="mb-3">
+                                                            <label for="title" class="form-label fs-4 fw-bold">제목</label>
+                                                            <input type="title" class="form-control" id="title" name="community_title" value="제목" th:value="${Board.community_title}">
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <label for="hits" class="form-label fs-4 fw-bold">작성자</label>
+                                                            <input type="text" class="form-control" id="hits" th:value="${Board.user_id}" disabled>
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <label for="exampleFormControlTextarea1" class="form-label fs-4 fw-bold">내용</label>
+                                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="10" name="community_contents"
+                                                                      th:field="*{Board.community_contents}"></textarea>
+                                                        </div>
+
+
+
+                                                        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
+                                                            <button type="submit" class="btn btn-primary">수정</button>
+                                                            <a href="javascript:window.history.back();"><button type="button" class="btn btn-primary">뒤로</button></a>
+                                                        </div>
+
+                                                        <br>
+
+                                                        <input type="hidden" name="community_num" value="0" th:value="${Board.community_num}">
+                                                        <input type="hidden" name="user_id" value="작성자" th:value="${Board.user_id}" >
+                                                    </form>
+                                                </div>
+
+                                                    <div th:each="reply : ${reply}" class="card mb-2">
+                                                        <form method="post" action="comment_update_admin">
+                                                            <input type="hidden" name="reply_num" th:value="${reply.reply_num}">
+                                                            <input type="hidden" name="community_num" th:value="${reply.community_num}">
+
+                                                            <div class="card-header bg-light">
+                                                            <i class="fa fa-comment fa"></i>  댓글
+                                                            <input type="submit" class="btn btn-secondary" id="btnCheck"
+                                                                   value="필터" style="height: 36px;float: right;">
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <ul class="list-group list-group-flush">
+                                                                <li class="list-group-item">
+                                                                    <div class="form-inline mb-2">
+                                                                        <label class="fw-bolder"><i class="fa fa-user-circle-o fa-2x"></i>
+                                                                            <span th:text="'작성자 : ' + ${reply.user_id}"
+                                                                                  style="color:gray;">&nbsp; 공선환</span>
+
+                                                                        </label>
+                                                                    </div>
+                                                                    <div th:text="'내용 : ' + ${reply.reply_contents}" class="fw-bolder">
+                                                                        1인 가구를 위한 원룸 매물입니다!!
+                                                                    </div>
+                                                                    <div th:text="'작성일 : ' + ${reply.reply_date}" class="fw-bolder" style="color:gray; padding-top: 10px;">
+                                                                        2023-04-10
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        </form>
+                                                    </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.4.0/dist/perfect-scrollbar.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highcharts@8.0.0/highcharts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-knob@1.2.11/dist/jquery.knob.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-sparkline@2.4.0/jquery.sparkline.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/peity@3.3.0/jquery.peity.min.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-50750921-19"></script>
+</body>
+</html>

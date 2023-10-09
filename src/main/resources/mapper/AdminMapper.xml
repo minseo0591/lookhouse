@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.thishouse.mapper.AdminMapper">
+    <!--qry-->
+    <!--문의사항 답변 -->
+    <update id="insert_reply" parameterType="com.example.thishouse.domain.Inquire">
+        update inquire set inquire_answer = #{inquire_answer}
+        where inquire_num = #{inquire_num}
+    </update>
+
+    <select id = "memberList_cnt" resultType="integer">
+        select count(*)
+        from member
+    </select>
+
+    <select id="memberAll" parameterType="com.example.thishouse.domain.Member" resultType="com.example.thishouse.domain.Member">
+        select * from member Order by user_create_time desc LIMIT #{recordCountPerPage} OFFSET ${firstIndex}
+    </select>
+
+    <select id="member_search_cnt" parameterType="String" resultType="int">
+        select count(*) from member
+        where user_name like CONCAT('%',#{context},'%')
+           or user_id like CONCAT('%',#{context},'%')
+           or user_phone like CONCAT('%',#{context},'%')
+    </select>
+
+    <select id="member_list_search" parameterType="com.example.thishouse.domain.Member" resultType="com.example.thishouse.domain.Member">
+        select * from member
+        where user_name like CONCAT('%',#{search_content},'%')
+           or user_id like CONCAT('%',#{search_content},'%')
+           or user_phone like CONCAT('%',#{search_content},'%')
+        order by user_create_time desc
+            limit ${recordCountPerPage} offset ${firstIndex}
+    </select>
+
+    <delete id="member_delete">
+        delete from member
+        where user_num = #{user_num}
+    </delete>
+
+    <update id="board_modify_admin">
+    </update>
+
+    <update id="comment_update_admin">
+        update community_reply
+        SET
+            reply_contents = "운영정책에 의해 블라인드 처리된 내용입니다"
+        where
+            reply_num = #{reply_num}
+    </update>
+
+    <select id="view_board" parameterType="com.example.thishouse.domain.community.Community_reply" resultType="com.example.thishouse.domain.community.Community">
+        select *
+        from community
+        where community_num = #{community_num}
+    </select>
+
+    <select id="view_reply" parameterType="com.example.thishouse.domain.community.Community_reply"  resultType="com.example.thishouse.domain.community.Community_reply">
+        select *
+        from community_reply
+        where community_num = ${community_num}
+        order by reply_date desc;
+    </select>
+
+    <delete id="delete_board_reply">
+        delete from community_reply
+        where community_num = #{community_num}
+    </delete>
+
+    <select id="reply_list" resultType="com.example.thishouse.domain.community.Community_reply">
+        select * from community_reply Order by reply_date desc LIMIT #{recordCountPerPage} OFFSET ${firstIndex}
+    </select>
+
+    <select id = "reply_listCnt" resultType="integer">
+        select count(*)
+        from community_reply
+    </select>
+
+    <select id="reply_list_search" parameterType="com.example.thishouse.domain.community.Community_reply" resultType="com.example.thishouse.domain.community.Community_reply">
+        select *
+        from community_reply
+        where ${search_name} like CONCAT('%',#{search_content},'%')
+        order by reply_num desc
+            limit ${recordCountPerPage} offset ${firstIndex}
+    </select>
+
+    <select id="reply_list_search_Cnt" parameterType="com.example.thishouse.domain.community.Community_reply" resultType="int">
+        select count(*) from community_reply where ${search_name} like CONCAT('%',#{search_content},'%')
+
+    </select>
+
+    <select id="re_list" parameterType="com.example.thishouse.domain.house.House_list" resultType="java.util.HashMap">
+        select * from house_list a, house_item b  where a.house_num = b.house_num Order by regist_time desc LIMIT #{recordCountPerPage} OFFSET ${firstIndex}
+    </select>
+
+    <select id = "re_list_cnt" resultType="integer">
+        select count(*) from house_list a, house_item b  where a.house_num = b.house_num
+    </select>
+
+    <update id="approval_ok_house_item"  parameterType="String">
+        update house_item
+        SET
+            approval = 1
+        where
+            house_num = #{house_num}
+    </update>
+
+    <update id="approval_ok_house_list" parameterType="String">
+        update house_list
+        SET
+            approval = 1
+        where
+            house_num = #{house_num}
+    </update>
+
+
+    <update id="approval_no_house_item" parameterType="String">
+        update house_item
+        SET
+            approval = 0
+        where
+            house_num = #{house_num}
+    </update>
+
+    <update id="approval_no_house_list" parameterType="String">
+        update house_list
+        SET
+            approval = 0
+        where
+            house_num = #{house_num}
+    </update>
+
+    <select id="no_re_list" parameterType="com.example.thishouse.domain.house.House_list" resultType="java.util.HashMap">
+        select * from house_list a, house_item b  where a.house_num = b.house_num and a.approval = 0 and b.approval = 0 Order by regist_time desc LIMIT #{recordCountPerPage} OFFSET ${firstIndex}
+    </select>
+
+    <select id = "no_re_list_cnt" resultType="integer">
+        select count(*) from house_list a, house_item b  where a.house_num = b.house_num and a.approval = 0 and b.approval = 0
+    </select>
+
+
+</mapper>

@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lagn="ko"
+xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel='stylesheet' type="text/css" href="/css/table.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+            integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+            integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+            crossorigin="anonymous"></script>
+
+    <!-- jquery UI CSS파일 -->
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />
+    <!-- jquery 기본 js 파일 -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- jquery UI 라이브러리 js파일 -->
+    <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <title>매물 등록 페이지</title>
+    <style>
+        .tac {
+            text-align: center;
+        }
+
+        .ta1 {
+            width: 200px;
+            background-color: darkgray;
+        }
+
+        .tamg {
+            display: flex;
+            justify-content: center;
+        }
+        a {
+        text-decoration-line: none;
+        }
+    </style>
+
+</head>
+
+<body>
+<header th:replace="~{header/header}"></header>
+<!-- header 끝 -->
+<form action="real_estate_insert" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+    <input type="hidden" name="user_id" value="user_id" th:value="${session.user_id}">
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>매물 등록</h2>
+    </div>
+    <!-- 안내테이블 -->
+    <div class="row">
+        <table summary="This table shows how to create responsive tables using Datatables' extended functionality"
+               class="table table-bordered .table-hover dt-responsive">
+
+            <tbody>
+            <td>
+                <div>
+                    <p>-전/월세 매물만 등록할 수 있습니다.</p>
+                    <p>&nbsp;매매는 이집봐라 허브에서만 등록하실 수 있습니다.</p>
+                    <p>&nbsp;소유중인 공실 매매와 매물 등록을 한번에 하고싶다면 <a>여기</a>를 이용해주세요.</p>
+
+                    <p>-1개의 매물만 등록 가능하며, 이집봐라에서 직거래로 표시됩니다.</p>
+                    <p>&nbsp;등록한 매물은 30일간 노출됩니다.</p>
+                </div>
+            </td>
+        </table>
+    </div>
+    <br><br>
+
+    <!-- 매물정보 -->
+    <div class="row">
+        <table summary="This table shows how to create responsive tables using Datatables' extended functionality"
+               class="table table-bordered .table-hover dt-responsive">
+            <thead>
+            <tr style="text-align: center">
+                <th class="email" colspan="2">매물 종류</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <td>종류선택</td>
+            <td>
+                <input type="radio" class="btn-check" name="house_type" id="type1" autocomplete="off" value="원룸" th:value="원룸" checked>
+                <label class="btn btn-outline-primary" for="type1">원룸</label>
+
+                <input type="radio" class="btn-check" name="house_type" id="type2" autocomplete="off" value="투룸" th:value="투룸">
+                <label class="btn btn-outline-primary" for="type2">투룸</label>
+
+                <input type="radio" class="btn-check" name="house_type" id="type3" autocomplete="off" value="오피스텔" th:value="오피스텔">
+                <label class="btn btn-outline-primary" for="type3">오피스텔</label>
+            </td>
+
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <!-- 위치정보 -->
+    <div class="row">
+        <table summary="This table shows how to create responsive tables using Datatables' extended functionality"
+               class="table table-bordered .table-hover dt-responsive">
+            <thead>
+            <tr style="text-align: center">
+                <th class="email" colspan="2">위치정보</th>
+            </tr>
+            </thead>
+            <tbody>
+            <td class="text-center align-middle" style="width: 20%; height: 300px;">주소</td>
+            <td class="d-flex">
+                <div style="width:50%;">
+                    <p>도로명, 건물명, 지번에 대해 통합검색이 가능합니다.</p>
+                    <div class="d-flex">
+                        <input type="text" class="form-control" id="sample6_postcode" name="road_num"
+                               placeholder="예)10-1, 강북구 번동" readonly> &nbsp;
+                        <button class="btn btn-sm btn-primary" type="button" style="width:30%;" onclick="sample6_execDaumPostcode()">주소 찾기</button>
+                    </div>
+                    <br />
+
+
+                    <input type="text" class="form-control" name="road_address" id="sample6_address" placeholder="주소" style="width:100%" readonly>
+                    <input type="hidden" class="form-control" name="latitude" id="sample6_latitude" placeholder="위도" style="width:100%" readonly>
+                    <input type="hidden" class="form-control" name="longitude" id="sample6_longitude" placeholder="경도" style="width:100%" readonly>
+
+                    <br />
+                    <div class="d-flex">
+                        <input type="text" class="form-control" id="sample6_extraAddress" name="detail_address"
+                               placeholder="상세주소       예)101동 201호"  >
+
+                    </div>
+
+                </div>
+                <div id="map" style="width:500px;height:350px;margin-top:10px;margin-left:10px;"></div>
+            </td>
+
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+    <!-- 거래종류 -->
+    <div class="row">
+        <label class="form-label"></label>
+        <table summary="This table shows how to create responsive tables using Datatables' extended functionality"
+               class="table table-bordered .table-hover dt-responsive">
+            <thead>
+            <tr class="tac">
+                <th class="email" colspan="2">거래 종류</th>
+            </tr>
+            </thead>
+            <tbody>
+            <td style="width: 100px;">
+                <div style="margin-top:10px; width: 100%;" class="tac">거래 종류</div>
+            </td>
+            <td>
+
+
+                <input type="radio" class="btn-check" name="deal_type" id="deal_type1" autocomplete="off" value="월세" checked
+                       onclick="document.getElementById('month_fee1').style.display='block';
+                                document.getElementById('month_fee2').style.display='block';
+                                document.getElementById('lb1').style.display='block';
+                                document.getElementById('lb2').style.display='block';
+                                document.getElementById('lb3').style.display='none';
+                                document.getElementById('year_fee').style.display='none';"
+                >
+                <label class="btn btn-outline-primary" for="deal_type1">월세</label>
+                <input type="radio" class="btn-check" name="deal_type" id="deal_type2" autocomplete="off" value="전세"
+                       onclick="document.getElementById('year_fee').style.display='block';
+                            document.getElementById('lb3').style.display='block';
+                            document.getElementById('month_fee2').style.display='none';
+                            document.getElementById('lb1').style.display='none';
+                            document.getElementById('lb2').style.display='none';
+
+                                document.getElementById('month_fee1').style.display='none';">
+
+
+
+                <label class="btn btn-outline-primary" for="deal_type2">전세</label>
+                <br>
+                <br>
+                <div class="d-flex">
+                    <label id="lb1"for="month_fee1">보증금 : &nbsp;</label>
+                    <input type="text" class="form-control" id="month_fee1" name="deposit" placeholder="0" style="display:block; width:200px;" value="0">
+                    <label id="lb2"for="month_fee1">&nbsp;월세 : &nbsp;</label>
+
+                    <input type="text" class="form-control" id="month_fee2" name="m_price" placeholder="0" style="display:block; width:200px;" value="0">
+                    <label id="lb3"for="month_fee1" style="display:none">전세 : &nbsp;</label>
+                    <input type="text" class="form-control" id="year_fee" name="y_price" placeholder="0" style="display:none; width:200px;" value="0">
+                    <label id="lb4"for="month_fee2"> &nbsp;만원</label>
+                <!--<span>단기가능</span>-->
+                </div>
+            </td>
+
+            </tbody>
+
+
+        </table>
+    </div>
+
+    <br><br>
+    <!-- 기본정보 -->
+    <div class="row">
+        <table summary="This table shows how to create responsive tables using Datatables' extended functionality"
+               class="table table-bordered .table-hover dt-responsive">
+            <thead>
+            <tr style="text-align: center">
+                <th class="email" colspan="4">기본정보</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr>
+                <td rowspan="2" style="width:15%;" class="align-middle text-center">
+                    <p>건물크기</p><span>(1P = 3.3058m<sup>2</sup>)</span>
+                </td>
+                <td style="width: 35%;" class="align-middle">공급면적
+                    <input type="text" name="supply_area1" size="10" value="0"> 평
+                    <input type="text" name="supply_area2" size="10" value="0.0"> m<sup>2</sup></td>
+                <td rowspan="2" class="align-middle text-center" style="width:15%;">
+                    건물층수</td>
+                <td style="width: 35%;" class="align-middle">건물층수 <select name="b_floors">
+                    <option value="1">1층</option>
+                    <option value="2">2층</option>
+                    <option value="3">3층</option>
+                    <option value="4">4층</option>
+                    <option value="5">5층</option>
+                    <option value="6">6층</option>
+                    <option value="7">7층</option>
+                    <option value="8">8층</option>
+                    <option value="9">9층</option>
+                    <option value="11">11층</option>
+                    <option value="12">12층</option>
+                    <option value="13">13층</option>
+                    <option value="14">14층</option>
+                    <option value="15">15층</option>
+                    <option value="16">16층</option>
+                    <option value="17">17층</option>
+                    <option value="18">18층</option>
+                    <option value="19">19층</option>
+                    <option value="20">20층</option>
+                </select></td>
+
+            </tr>
+            <tr>
+                <td>전용면적
+                    <input type="text" name="exclusive_area1" size="10" value="0"> 평
+                    <input type="text"  name="exclusive_area2" size="10" value="0.0"> m<sup>2</sup> </td>
+                <td>해당층수 <select name="n_floors">
+                    <option value="1">1층</option>
+                    <option value="2">2층</option>
+                    <option value="3">3층</option>
+                    <option value="4">4층</option>
+                    <option value="5">5층</option>
+                    <option value="6">6층</option>
+                    <option value="7">7층</option>
+                    <option value="8">8층</option>
+                    <option value="9">9층</option>
+                    <option value="11">11층</option>
+                    <option value="12">12층</option>
+                    <option value="13">13층</option>
+                    <option value="14">14층</option>
+                    <option value="15">15층</option>
+                    <option value="16">16층</option>
+                    <option value="17">17층</option>
+                    <option value="18">18층</option>
+                    <option value="19">19층</option>
+                    <option value="20">20층</option>
+                </select></td>
+            </tr>
+
+            <tr>
+                <td class="align-middle text-center">난방종류</td>
+                <td colspan="3">
+                    <select class="form-select" name="heating_type" aria-label="Default select example" style="width: 170px">
+                        <option selected>난방 종류 선택</option>
+                        <option value="중앙 난방">중앙 난방</option>
+                        <option value="지역 난방">지역 난방</option>
+                        <option value="개별 난방">개별 난방</option>
+                    </select>
+
+                </td>
+
+            </tr>
+
+
+            <tr>
+                <td class="align-middle text-center">입주가능일</td>
+                <td colspan="3">
+                    <input type="radio" class="btn-check" name="move_in_date" id="move_in1" autocomplete="off"
+                           onclick="document.getElementById('text1').style.display='none';" value="즉시 입주">
+                    <label class="btn btn-outline-primary" for="move_in1">즉시 입주</label>
+
+                    <input type="radio" class="btn-check" name="move_in_date" id="move_in2" autocomplete="off"
+                           onclick="document.getElementById('text1').style.display='none';" value="날짜 협의">
+                    <label class="btn btn-outline-primary" for="move_in2">날짜 협의</label>
+
+                    <input type="radio" class="btn-check"  name="move_in_date" id="move_in3" autocomplete="off"
+                           onclick="document.getElementById('text1').style.display='block';">
+                    <label class="btn btn-outline-primary" for="move_in3" >날짜 선택</label>
+
+                    <input type="date" lass="form-control"  id="text1" style="display:none" >
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+    var radio_val = document.getElementById("move_in3");
+    var cal_val = document.getElementById("text1").value;
+    radio_val.value = cal_val
+    </script>
+
+    <br><br>
+    <!-- 추가정보 -->
+    <div class="row">
+        <table summary="This table shows how to create responsive tables using Datatables' extended functionality"
+               class="table table-bordered .table-hover dt-responsive">
+            <thead>
+            <tr style="text-align: center">
+                <th class="email" colspan="4">추가 정보</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td rowspan="2" style="width: 15%;" class="align-middle text-center">관리비
+                </td>
+                <td colspan="3">
+                    <div class="d-flex">
+<!--                        <div class="col-sm-3">-->
+<!--                            <input type="text" class="form-control" id="item_price" name="item_price" placeholder="만원"-->
+<!--                                   value="" required>-->
+<!--                        </div>-->
+                        <!--                            <div style="font-size: 20px;">만원</div>-->
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="m_cost_type"  id="flexCheckDefault" checked
+                                   onclick="document.getElementById('item_price').style.display='block';" value="협의가능">
+
+                            <label class="form-check-label" for="flexCheckDefault">
+                                협의가능
+                            </label>
+                        </div>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="m_cost_type" value="관리비없음"  id="flexCheckChecked"
+                                   onclick="document.getElementById('item_price').style.display='none';">
+                            <label class="form-check-label" for="flexCheckChecked">
+                                관리비 없음
+                            </label>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id="item_price" name="m_cost" placeholder="만원"
+                                   value="0">
+                        </div>
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <div class="d-flex">
+
+                        <div class="fw-light text-center">
+                            <div style="font-size: 12px; width: 100px;">
+                                관리비항목
+                                <br>
+                                <span>(다중선택가능)</span>
+                            </div>
+                        </div>
+                        &nbsp;&nbsp;&nbsp;
+                        <div class="input-group has-validation">
+                            <div>
+                                <input type="checkbox" class="btn-check" id="btn-check-outlined" name="m_internet" autocomplete="off" value="인터넷">
+                                <label class="btn btn-outline-primary" for="btn-check-outlined">인터넷</label>
+
+                                <input type="checkbox" class="btn-check" id="btn-check-2-outlined" name="m_wiredtv"
+                                       autocomplete="off" value="유선TV">
+                                <label class="btn btn-outline-primary" for="btn-check-2-outlined">유선TV</label>
+
+                                <input type="checkbox" class="btn-check" id="btn-check-3-outlined" name="m_cleaning"
+                                       autocomplete="off" value="청소비">
+                                <label class="btn btn-outline-primary" for="btn-check-3-outlined">청소비</label>
+
+                                <input type="checkbox" class="btn-check" id="btn-check-4-outlined" name="m_watertax"
+                                       autocomplete="off" value="수도세">
+                                <label class="btn btn-outline-primary" for="btn-check-4-outlined">수도세</label>
+
+                                <input type="checkbox" class="btn-check" id="btn-check-5-outlined" name="m_citygas"
+                                       autocomplete="off" value="도시가스">
+                                <label class="btn btn-outline-primary" for="btn-check-5-outlined">도시가스</label>
+
+                                <input type="checkbox" class="btn-check" id="btn-check-6-outlined" name="m_elec"
+                                       autocomplete="off" value="전기세">
+                                <label class="btn btn-outline-primary" for="btn-check-6-outlined">전기세</label>
+
+                                <input type="checkbox" class="btn-check" id="btn-check-77-outlined" name="m_etc"
+                                       autocomplete="off" value="기타">
+                                <label class="btn btn-outline-primary" for="btn-check-77-outlined">기타</label>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%;" class="align-middle text-center">엘레베이터</td>
+                <td style="width: 35%;">
+                    <div>
+                        <input type="radio" class="btn-check" name="elevator" id="option1" autocomplete="off"
+                               checked value="불가능">
+                        <label class="btn btn-outline-primary" for="option1">불가능</label>
+
+                        <input type="radio" class="btn-check" name="elevator" id="option2" autocomplete="off" value="가능">
+                        <label class="btn btn-outline-primary" for="option2">가능</label>
+                    </div>
+                </td>
+                <td style="width: 15%;" class="align-middle text-center">베란다/발코니</td>
+                <td style="width: 35%;">
+                    <div>
+                        <input type="radio" class="btn-check" name="v_b" id="option3" autocomplete="off" value="불가능"
+                               checked>
+                        <label class="btn btn-outline-primary" for="option3">불가능</label>
+
+                        <input type="radio" class="btn-check" name="v_b" id="option4" autocomplete="off" value="가능">
+                        <label class="btn btn-outline-primary" for="option4">가능</label>
+
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="align-middle text-center">주차여부</td>
+                <td>
+                    <div>
+                        <div class="d-flex">
+                        <input type="radio" class="btn-check" name="parking" id="option5" autocomplete="off" value="불가능"
+                               checked onclick="document.getElementById('parking_fee').style.display='none';
+                                                document.getElementById('lb').style.display='none';">
+                        <label class="btn btn-outline-primary" for="option5">불가능</label>
+                        <input type="radio" class="btn-check"  id="option6" autocomplete="off" name="parking"
+                               onclick="document.getElementById('parking_fee').style.display='block';
+                                        document.getElementById('lb').style.display='block';
+                                        " value="가능">&nbsp;
+                        <label class="btn btn-outline-primary" for="option6">가능</label>&nbsp;
+
+                        <input type="text" class="form-control" id="parking_fee" name="parkingfee" value="0"
+                               style="display:none ;width: 136px;">
+                        <label  id="lb"for="parking_fee" style="display:none;">&nbsp;만원</label>
+                    </div>
+                    </div>
+                </td>
+                <td class="align-middle text-center">빌트인</td>
+                <td>
+                    <div>
+                        <input type="radio" class="btn-check" name="built_in" id="option7" autocomplete="off" value="없음"
+                               checked>
+                        <label class="btn btn-outline-primary" for="option7">없음</label>
+
+                        <input type="radio" class="btn-check" name="built_in" id="option8" autocomplete="off" value="있음">
+                        <label class="btn btn-outline-primary" for="option8">있음</label>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="align-middle text-center">구조</td>
+                <td colspan="3">
+                    <div class="input-group has-validation">
+                        <div>
+                            <input type="radio" class="btn-check" name ="structure" id="btn-check-7-outlined" autocomplete="off" value="복층">
+                            <label class="btn btn-outline-primary" for="btn-check-7-outlined">복층</label>
+
+                            <input type="radio" class="btn-check" name ="structure" id="btn-check-8-outlined" autocomplete="off" value="1.5룸/주방분리형">
+                            <label class="btn btn-outline-primary" for="btn-check-8-outlined">1.5룸/주방분리형</label>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="align-middle text-center">옵션항목</td>
+                <td colspan="3">
+                    <div class="input-group has-validation">
+                        <div>
+                            <input type="checkbox" class="btn-check" id="btn-check-9-outlined" name="induction" value="인덕션" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btn-check-9-outlined">인덕션</label>
+
+                            <input type="checkbox" class="btn-check" id="btn-check-10-outlined"  name="microwave" value="전자레인지" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btn-check-10-outlined">전자레인지</label>
+
+                            <input type="checkbox" class="btn-check" id="btn-check-11-outlined" name="air_con" value="에어컨" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btn-check-11-outlined">에어컨</label>
+
+                            <input type="checkbox" class="btn-check" id="btn-check-12-outlined"  name="washing_machine" value="세탁기" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btn-check-12-outlined">세탁기</label>
+
+                            <input type="checkbox" class="btn-check" id="btn-check-13-outlined"  name="tv" value="TV" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btn-check-13-outlined">TV</label>
+
+                            <input type="checkbox" class="btn-check" id="btn-check-14-outlined"  name="closet" value="옷장" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btn-check-14-outlined">옷장</label>
+
+                            <input type="checkbox" class="btn-check" id="btn-check-15-outlined"  name="bed" value="침대" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btn-check-15-outlined">침대</label>
+
+                            <input type="checkbox" class="btn-check" id="btn-check-16-outlined"  name="a_table" value="책상" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btn-check-16-outlined">책상</label>
+
+                            <input type="checkbox" class="btn-check" id="btn-check-17-outlined"  name="shoe_closet" value="신발장" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btn-check-17-outlined">신발장</label>
+
+                            <input type="checkbox" class="btn-check" id="btn-check-18-outlined" name="bidet" value="비데" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btn-check-18-outlined">비데</label>
+
+                            <input type="checkbox" class="btn-check" id="btn-check-19-outlined" name="gas_range" value="가스레인지" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btn-check-19-outlined">가스레인지</label>
+
+                            <input type="checkbox" class="btn-check" id="btn-check-20-outlined" name="refrig" value="냉장고" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btn-check-20-outlined">냉장고</label>
+
+                            <input type="checkbox" class="btn-check" id="btn-check-21-outlined" name="electronic_door" value="전자도어락" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btn-check-21-outlined">전자도어락</label>
+                        </div>
+                    </div>
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- 상세설명 -->
+    <br><br>
+    <div class="row">
+        <table
+                summary="This table shows how to create responsive tables using Datatables' extended functionality"
+                class="table table-bordered .table-hover dt-responsive">
+            <thead>
+            <tr style="text-align: center">
+                <th class="email" colspan="2">상세 설명</th>
+            </tr>
+            </thead>
+            <tbody >
+            <tr height="30px">
+                <td class="text-center align-middle" style="width: 150px;">제목</td>
+                <td>
+                    <input type="text" class="form-control" id="firstName" name="h_title"
+                           placeholder="예)의정부역 도보3분거리, 혼자 살기 좋은 방 입니다." style="width: 100%;">
+
+                </td>
+            </tr>
+            <tr height="300px">
+                <td class="text-center align-middle" style="width: 150px;">상세설명</td>
+                <td>
+                    <textarea class="form-control" id="h_content" name="h_content"
+                              placeholder="
+                    [상세설명 작성 주의사항] &#13;&#10;
+                    -매물 정보와관렵없는 홍보성정보는 입력할 수 없습니다. &#13;&#10;
+                    -매물등록규정에 위반되는금칙어는 입력할 수 없습니다. &#13;&#10;
+                     &#13;&#10;
+                     위 주의사항 위반시 임의로 매물 삭제 혹은 서비스 이용이 제한될 수 있습니다."
+
+                              value="" style="width: 100%; height: 300px;"></textarea>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- 사진등록 -->
+    <br><br>
+    <div class="row">
+        <table
+                summary="This table shows how to create responsive tables using Datatables' extended functionality"
+                class="table table-bordered .table-hover dt-responsive">
+            <thead>
+            <tr style="text-align: center">
+                <th class="email" colspan="2">사진등록</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <td>
+                <div>
+                    <p>-사진은 가로로 찍은 사진을 권장합니다.(가로 사이즈 최소800px)</p>
+                    <p>-사진용량은 사진 한 장당 10MB까지 등록이 가능합니다.</p>
+                    <p>-사진은 최소 3장이상 등록해야하며, 최대 15장 까지 권장합니다. 그 이상 등록할 경우 업로드 시간이 다소 지연될 수 있습니다.</p>
+                </div>
+            </td>
+            <tr>
+                <td style="text-align: center;">
+                    <div class="card p-2" style="display: inline-block;">
+                        <div id="previewContainer">
+                            <img src="/img/img_null.png" class="img-thumbnail" alt="#" style="max-width: 800px; max-height: 800px; display: block; margin: 0 auto;">
+                        </div>
+                        <hr>
+                        <input type="file" name="files" accept=".png, .jpg" multiple data-max-files="15" data-min-files="3" onchange="checkFileCount(this)" id="fileInput">
+                        <span style="padding-top: 10px;"></span>
+                        <!-- <button type="submit" class="btn btn-secondary">등록</button> -->
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <br>
+    <br>
+
+    <div class="row">
+        <h5 class="fw-bold"><i class="bi bi-patch-exclamation-fill" style="color: blue;"></i> 임차인 정보</h5>
+        <table
+                summary="This table shows how to create responsive tables using Datatables' extended functionality"
+                class="table table-bordered .table-hover dt-responsive">
+            <thead>
+            <tr>
+                <td class="deliverytd text-center" colspan="6">임대인<span style="color:red;">*</span></td>
+            </tr>
+
+            <tr>
+                <td class="deliverytd text-center">주소&nbsp;<span style="color:red;">*</span></td>
+                <td colspan="5">
+                    <div class="d-flex">
+                        <input type="text" name="l_road_address" class="form-control" placeholder="도로명 주소" style="width: 950px;">
+                    </div>
+
+                    <div class="d-flex">
+                        <input type="text" name="l_detail_address" class="form-control" placeholder="상세주소" style="width: 950px;">
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="deliverytd text-center">주민등록번호&nbsp;<span style="color:red;">*</span></td>
+                <td>
+                    <div class="d-flex">
+                        <input type="text" name="lessoer_resident_number_f" class="form-control" style="width: 150px;" maxlength="6"> &nbsp;-&nbsp;
+                        <input type="password" name="lessoer_resident_number_b" class="form-control" style="width: 150px;"maxlength="7">
+                    </div>
+                </td>
+                <td>전화&nbsp;<span style="color:red;">*</span></td>
+                <td>  <input type="text" name="lessoer_phone" class="form-control" style="width: 150px;" maxlength="11"></td>
+                <td>성명&nbsp;<span style="color:red;">*</span></td>
+                <td>  <input type="text" name="lessoer_name" class="form-control" style="width: 150px;" maxlength="10"></td>
+            </tr>
+
+
+
+        </table>
+    </div>
+
+    <br><br>
+    <div class="row gy-3">
+        <a href="/main"></a>
+    </div>
+    <input type="submit" class="w-100 btn btn-primary btn-lg" value="등록하기">
+</div>
+</a>
+<!-- 컨테이너 -->
+
+</div>
+</form>
+
+<footer class="my-5 pt-5 text-muted text-center text-small">
+    <p class="mb-1">&copy; 2023 이집봐라</p>
+</footer>
+
+<script>
+        function validateForm() {
+            var fileInput = document.querySelector('input[type="file"]');
+            var files = fileInput.files;
+            var allowedExtensions = /(.png|.jpg)$/i;
+
+            for (var i = 0; i < files.length; i++) {
+                if (!allowedExtensions.test(files[i].name)) {
+                    alert('올바른 파일 형식이 아닙니다. PNG 또는 JPG 파일만 업로드할 수 있습니다.');
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        function checkFileCount(input) {
+            var maxFiles = parseInt(input.getAttribute('data-max-files'));
+            var minFiles = 3; // 최소 파일 개수
+            var selectedFiles = input.files.length;
+
+            if (selectedFiles > maxFiles) {
+                alert(maxFiles + "개까지 파일을 업로드할 수 있습니다.");
+                input.value = ''; // 선택된 파일 초기화
+                return;
+            }
+            else if (selectedFiles < minFiles) {
+                alert("적어도 3개의 파일을 업로드해주세요.");
+                input.value = ''; // 선택된 파일 초기화
+                return;
+            }
+
+            updateThumbnails(input); // 썸네일 업데이트 호출
+        }
+
+        function updateThumbnails(input) {
+            var previewContainer = document.getElementById('previewContainer');
+            previewContainer.innerHTML = ''; // 기존 썸네일 초기화
+
+            var thumbnailContainer = document.createElement('div');
+            thumbnailContainer.style.display = 'flex'; // 가로 정렬을 위해 flex 사용
+            thumbnailContainer.style.flexWrap = 'wrap'; // 필요한 경우 줄바꿈
+            thumbnailContainer.style.justifyContent = 'center'; // 가운데 정렬
+            thumbnailContainer.style.margin = '10px auto'; // 가운데 정렬 및 여백
+            previewContainer.appendChild(thumbnailContainer);
+
+            for (var i = 0; i < input.files.length; i++) {
+                var file = input.files[i];
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var thumbnail = document.createElement('img');
+                    thumbnail.src = e.target.result;
+                    thumbnail.className = 'img-thumbnail';
+                    thumbnail.style.maxWidth = '300px'; // 미리보기 이미지의 너비 조정
+                    thumbnail.style.margin = '5px'; // 이미지 간 간격
+                    thumbnailContainer.appendChild(thumbnail);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=743bd643ee6f33b7f2800e2b1fc9802e&libraries=services"></script>
+
+<!--<script>-->
+<!--    var mapContainer = document.getElementById('map'), // 지도를 표시할 div-->
+<!--        mapOption = {-->
+<!--            center: new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표-->
+<!--            level: 5 // 지도의 확대 레벨-->
+<!--        };-->
+
+<!--    //지도를 미리 생성-->
+<!--    var map = new daum.maps.Map(mapContainer, mapOption);-->
+<!--    //주소-좌표 변환 객체를 생성-->
+<!--    var geocoder = new daum.maps.services.Geocoder();-->
+<!--    //마커를 미리 생성-->
+<!--    var marker = new daum.maps.Marker({-->
+<!--        position: new daum.maps.LatLng(37.537187, 127.005476),-->
+<!--        map: map-->
+<!--    });-->
+
+
+<!--     function sample6_execDaumPostcode() {-->
+<!--        new daum.Postcode({-->
+<!--            oncomplete: function(data) {-->
+<!--                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.-->
+
+<!--                // 각 주소의 노출 규칙에 따라 주소를 조합한다.-->
+<!--                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.-->
+<!--                var addr = ''; // 주소 변수-->
+<!--                var extraAddr = ''; // 참고항목 변수-->
+
+<!--                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.-->
+<!--                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우-->
+<!--                    addr = data.roadAddress;-->
+<!--                } else { // 사용자가 지번 주소를 선택했을 경우(J)-->
+<!--                    addr = data.jibunAddress;-->
+<!--                }-->
+
+<!--                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.-->
+<!--                if(data.userSelectedType === 'R'){-->
+<!--                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)-->
+<!--                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.-->
+<!--                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){-->
+<!--                        extraAddr += data.bname;-->
+<!--                    }-->
+<!--                    // 건물명이 있고, 공동주택일 경우 추가한다.-->
+<!--                    if(data.buildingName !== '' && data.apartment === 'Y'){-->
+<!--                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);-->
+<!--                    }-->
+<!--                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.-->
+<!--                    if(extraAddr !== ''){-->
+<!--                        extraAddr = ' (' + extraAddr + ')';-->
+<!--                    }-->
+<!--                    // 조합된 참고항목을 해당 필드에 넣는다.-->
+<!--                    document.getElementById("sample6_extraAddress").value = extraAddr;-->
+
+<!--                } else {-->
+<!--                    document.getElementById("sample6_extraAddress").value = '';-->
+<!--                }-->
+
+<!--                // 우편번호와 주소 정보를 해당 필드에 넣는다.-->
+<!--                document.getElementById('sample6_postcode').value = data.zonecode;-->
+<!--                document.getElementById("sample6_address").value = addr;-->
+<!--                // 커서를 상세주소 필드로 이동한다.-->
+<!--&lt;!&ndash;                document.getElementById("sample6_detailAddress").focus();&ndash;&gt;-->
+
+<!--                var addrs = data.address; // 최종 주소 변수-->
+
+<!--                // 주소 정보를 해당 필드에 넣는다.-->
+<!--                document.getElementById("sample6_address").value = addrs;-->
+<!--                // 주소로 상세 정보를 검색-->
+<!--                geocoder.addressSearch(data.address, function(results, status) {-->
+<!--                    // 정상적으로 검색이 완료됐으면-->
+<!--                    if (status === daum.maps.services.Status.OK) {-->
+
+<!--                        var result = results[0]; //첫번째 결과의 값을 활용-->
+
+<!--                        // 해당 주소에 대한 좌표를 받아서-->
+<!--                        var coords = new daum.maps.LatLng(result.y, result.x);-->
+<!--                        // 지도를 보여준다.-->
+<!--                        mapContainer.style.display = "block";-->
+<!--                        map.relayout();-->
+<!--                        // 지도 중심을 변경한다.-->
+<!--                        map.setCenter(coords);-->
+<!--                        // 마커를 결과값으로 받은 위치로 옮긴다.-->
+<!--                        marker.setPosition(coords)-->
+<!--                    }-->
+<!--                });-->
+<!--            }-->
+<!--        }).open();-->
+<!--    }-->
+<!--</script>-->
+
+<script>
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+        mapOption = {
+            center: new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심 좌표
+            level: 5 // 지도의 확대 레벨
+        };
+
+    // 지도 객체 미리 생성
+    var map = new daum.maps.Map(mapContainer, mapOption);
+    // 주소-좌표 변환 객체 생성
+    var geocoder = new daum.maps.services.Geocoder();
+    // 마커 미리 생성
+    var marker = new daum.maps.Marker({
+        position: new daum.maps.LatLng(37.537187, 127.005476),
+        map: map
+    });
+
+    // 주소로부터 위도와 경도를 가져오는 함수
+    function getLatLngFromRoadName(roadName) {
+        geocoder.addressSearch(roadName, function(results, status) {
+            // 검색이 성공했을 경우
+            if (status === daum.maps.services.Status.OK) {
+
+                var result = results[0]; // 첫번째 결과 값을 사용한다.
+
+                // 해당 주소의 좌표를 가져온다.
+                var latitude = result.y;
+                var longitude = result.x;
+
+                // 가져온 위도와 경도를 사용한다.
+                console.log("위도:", latitude);
+                console.log("경도:", longitude);
+
+                document.getElementById("sample6_latitude").value = latitude;
+                document.getElementById("sample6_longitude").value = longitude;
+
+                // 지도 중심을 변경한다.
+                var coords = new daum.maps.LatLng(latitude, longitude);
+                map.setCenter(coords);
+                // 마커를 검색한 위치로 옮긴다.
+                marker.setPosition(coords);
+            } else {
+                console.log("주소 검색 실패:", status);
+            }
+        });
+    }
+
+    function sample6_execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 팝업에서 검색 결과 항목을 클릭했을 때 실행될 코드 작성 부분.
+
+                // 주소의 각 부분을 주소 형식에 맞게 조합한다.
+                var addr = ''; // 주소 변수
+                var extraAddr = ''; // 참고 항목 변수
+
+                // 사용자가 선택한 주소 유형에 따라 주소 값을 가져온다.
+                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                    addr = data.roadAddress;
+                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    addr = data.jibunAddress;
+                }
+
+                // 사용자가 도로명 주소를 선택했을 경우 참고 항목을 조합한다.
+                if(data.userSelectedType === 'R'){
+                    // 법정동명이 있고, 공동주택일 경우 추가한다. (제외 기타 주택)
+                    // 도로명, 지번 조합일 경우, "동/로/가"로 끝난다.
+                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                        extraAddr += data.bname;
+                    }
+                    // 건물명이 있고, 공동주택일 경우 추가한다.
+                    if(data.buildingName !== '' && data.apartment === 'Y'){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    // 참고 항목이 있을 경우, 괄호로 묶어 최종 문자열을 생성한다.
+                    if(extraAddr !== ''){
+                        extraAddr = ' (' + extraAddr + ')';
+                    }
+                    // 조합된 참고 항목을 해당 필드에 넣는다.
+                    document.getElementById("sample6_extraAddress").value = extraAddr;
+
+                } else {
+                    document.getElementById("sample6_extraAddress").value = '';
+                }
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById('sample6_postcode').value = data.zonecode;
+                document.getElementById("sample6_address").value = addr;
+                // 상세 주소 필드로 커서를 이동한다.
+                <!-- document.getElementById("sample6_detailAddress").focus();-->
+
+                var addrs = data.address; // 최종 주소 변수
+
+                // 주소 정보를 해당 필드에 넣는다.
+                document.getElementById("sample6_address").value = addrs;
+                // 주소로 좌표를 검색하여 지도에 표시한다.
+                getLatLngFromRoadName(addrs);
+            }
+        }).open();
+    }
+</script>
+</body>
+
+</html>

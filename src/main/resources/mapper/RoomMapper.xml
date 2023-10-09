@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.thishouse.mapper.RoomMapper">
+    <insert id="insertRoom">
+        insert into chtroom values (#{roomId},#{house_num},#{buyerId},#{sellerId},now())
+    </insert>
+
+    <select id="findAllList" resultType="com.example.thishouse.domain.MsgRoom">
+            select * from chtroom order by roomdate desc;
+    </select>
+
+    <select id="getRoom"  resultType="com.example.thishouse.domain.MsgRoom">
+        select * from chtroom where roomid=#{roomId} and house_num = #{house_num}
+    </select>
+
+    <select id="getHouse" resultType="com.example.thishouse.domain.house.House_item">
+        select * from house_item where house_num=#{house_num}
+    </select>
+
+    <!-- 해당 사용자와 하우스번호에 대한 이미 존재하는지 확인 -->
+    <select id="getRoomByHouseAndUser" resultType="com.example.thishouse.domain.MsgRoom">
+        SELECT * FROM chtroom
+        WHERE house_num = #{house_num} AND buyerid = #{buyerId}
+    </select>
+
+    <select id="getRoomUserList" resultType="com.example.thishouse.domain.MsgRoom">
+        SELECT * from chtroom where buyerid =#{user_id} OR sellerid= #{user_id}
+    </select>
+    
+
+    <select id="getAlarmRoom" resultType="com.example.thishouse.domain.MsgRoom">
+        select * from chtroom where roomid =#{roomid}
+    </select>
+
+
+</mapper>

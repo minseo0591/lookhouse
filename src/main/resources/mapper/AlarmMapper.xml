@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.thishouse.mapper.AlarmMapper">
+    
+    
+    <insert id="insertAlarm" >
+        insert into alarm(user_id, sender, roomid, al_content, al_date, al_chk)
+        values( #{user_id}, #{sender}, #{roomid}, #{al_content},now(), 0 )
+    </insert>
+
+
+
+
+    <select id="getBuyerOrSellerId" resultType="string">
+        SELECT IF(buyerid = #{userid}, sellerid, buyerid) AS id
+        FROM chtroom
+        WHERE roomid = #{roomid}
+    </select>
+
+    <select id = "alarmList" resultType="com.example.thishouse.domain.Alarm">
+        select alarm.user_id, alarm.sender, alarm.roomid, alarm.al_content, alarm.al_date, alarm.al_chk, chtroom.house_num as "housenum",COUNT(*) AS roomid_count
+        from alarm, chtroom
+        where  alarm.al_chk = 0 AND alarm.user_id = #{user_id} and alarm.roomid = chtroom.roomid and alarm.roomid = any(select roomid from alarm where user_id = #{user_id})
+        Group by alarm.roomid;
+    </select>
+
+    <update id="alchecked">
+        update alarm
+        set al_chk = 1
+        where user_id = #{user_id} and roomid= #{roomid} and al_chk = 0
+    </update>
+    
+    <select id="getDistinctHouseNum" resultType="int">
+        SELECT DISTINCT room.house_num
+        FROM chtroom AS room, alarm AS alarm
+        WHERE room.roomid = alarm.roomid
+          AND alarm.roomid = #{roomid}
+    </select>
+
+
+
+</mapper>

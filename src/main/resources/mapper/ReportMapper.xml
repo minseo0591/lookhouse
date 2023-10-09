@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.thishouse.mapper.ReportMapper">
+    <insert id="insertReport">
+        insert into report(house_num,user_id,report_content,report_content_pic,report_seller_pic,report_house_pic,close_house,information_distinct,report_date)
+        values (#{house_num},#{user_id}, #{report_content},#{report_content_pic},#{report_seller_pic},#{report_house_pic},#{close_house},#{information_distinct},now())
+    </insert>
+
+    <select id="report_list" resultType="com.example.thishouse.domain.Report">
+        select *
+        from report
+        where house_num = #{house_num}
+    </select>
+
+    <select id="report_all" resultType="com.example.thishouse.domain.Report">
+        select * from report   order by report_date desc
+        limit ${recordCountPerPage} offset ${firstIndex}
+    </select>
+
+    <select id="report_all_cnt" resultType="int">
+        select count(*) from report
+    </select>
+</mapper>

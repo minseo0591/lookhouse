@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>실시간 채팅</title>
+</head>
+<body>
+<div id="chat">
+  <ul id="messages"></ul>
+  <input type="text" id="input" autofocus>
+  <button onclick="sendMessage()">전송</button>
+</div>
+
+<script th:inline="javascript">
+  var socket = new WebSocket('ws://localhost:8082/chat');
+  var messages = document.getElementById('messages');
+
+  socket.onmessage = function(event) {
+    var message = document.createElement('li');
+    message.innerText = event.data;
+    messages.appendChild(message);
+  };
+
+  function sendMessage() {
+    var input = document.getElementById('input');
+    socket.send(input.value);
+    input.value = '';
+  }
+</script>
+</body>
+</html>

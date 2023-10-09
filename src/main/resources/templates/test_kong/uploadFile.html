@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이미지 업로드</title>
+</head>
+<body>
+<h1>이미지 업로드</h1>
+<form method="POST" action="/upload" enctype="multipart/form-data" onsubmit="return validateForm()">
+    <input type="file" name="files" accept=".png, .jpg" multiple>
+    <input type="submit" value="업로드">
+</form>
+
+<script>
+        function validateForm() {
+            var fileInput = document.querySelector('input[type="file"]');
+            var files = fileInput.files;
+            var allowedExtensions = /(\.png|\.jpg)$/i;
+
+            for (var i = 0; i < files.length; i++) {
+                if (!allowedExtensions.test(files[i].name)) {
+                    alert('올바른 파일 형식이 아닙니다. PNG 또는 JPG 파일만 업로드할 수 있습니다.');
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    </script>
+</body>
+</html>

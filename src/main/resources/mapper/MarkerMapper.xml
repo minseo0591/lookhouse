@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.thishouse.mapper.MarkerMapper">
+<!--    <insert id="insertMarker" parameterType="com.example.thishouse.domain.Marker">-->
+<!--        INSERT INTO markers (road_address, latitude, longitude)-->
+<!--        VALUES (#{road_address}, #{latitude}, #{longitude})-->
+<!--    </insert>-->
+
+    <select id="getMarkers" resultType="java.util.HashMap">
+--         SELECT * FROM house_location a, house_deal b where a.house_num = b.house_num
+
+SELECT * FROM house_location a, house_list b,
+              (select *
+               from house_picture
+               where house_picture_num in (select max(house_picture_num) from house_picture group by house_num)) c
+where a.house_num = b.house_num and
+    b.house_num = c.house_num and
+    c.house_num = a.house_num and approval = 1
+    </select>
+
+    <select id="map_filter" parameterType="com.example.thishouse.domain.house.House_list" resultType="java.util.HashMap">
+        SELECT * FROM house_location a, house_list b,
+                      (select *
+                       from house_picture
+                       where house_picture_num in (select max(house_picture_num) from house_picture group by house_num)) c
+        where a.house_num = b.house_num and
+            b.house_num = c.house_num and
+            c.house_num = a.house_num and approval = 1 and
+            house_type = #{house_type} and
+            deal_type = #{deal_type} and
+            exclusive_area2  <![CDATA[<]]> #{exclusive_area2}
+
+    </select>
+
+    <select id="map_all_house_type_filter" parameterType="com.example.thishouse.domain.house.House_list" resultType="java.util.HashMap">
+        SELECT * FROM house_location a, house_list b,
+                      (select *
+                       from house_picture
+                       where house_picture_num in (select max(house_picture_num) from house_picture group by house_num)) c
+        where a.house_num = b.house_num and
+            b.house_num = c.house_num and
+            c.house_num = a.house_num and approval = 1 and
+            deal_type in (#{deal_type}) and
+            exclusive_area2  <![CDATA[<]]> #{exclusive_area2}
+
+    </select>
+
+    <select id="map_all_deal_type_filter" parameterType="com.example.thishouse.domain.house.House_list" resultType="java.util.HashMap">
+        SELECT * FROM house_location a, house_list b,
+                      (select *
+                       from house_picture
+                       where house_picture_num in (select max(house_picture_num) from house_picture group by house_num)) c
+        where a.house_num = b.house_num and
+            b.house_num = c.house_num and
+            c.house_num = a.house_num and approval = 1 and
+            house_type in (#{house_type}) and
+            exclusive_area2  <![CDATA[<]]> #{exclusive_area2}
+
+    </select>
+
+
+
+    <select id="all_map" resultType="java.util.HashMap">
+        SELECT * FROM house_location a, house_list b,
+                      (select *
+                       from house_picture
+                       where house_picture_num in (select max(house_picture_num) from house_picture group by house_num)) c
+        where a.house_num = b.house_num and
+            b.house_num = c.house_num and
+            c.house_num = a.house_num and approval = 1
+    </select>
+</mapper>

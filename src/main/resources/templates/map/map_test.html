@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta content="" name="description">
+    <meta content="Mark Otto, Jacob Thornton, and Bootstrap contributors" name="author">
+    <meta content="Hugo 0.111.3" name="generator">
+    <title>지도</title>
+    <!-- Favicons -->
+    <link href="/docs/5.3/assets/img/favicons/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180">
+    <link href="/docs/5.3/assets/img/favicons/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
+    <link href="/docs/5.3/assets/img/favicons/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png">
+    <link href="/docs/5.3/assets/img/favicons/manifest.json" rel="manifest">
+    <link color="#712cf9" href="/docs/5.3/assets/img/favicons/safari-pinned-tab.svg" rel="mask-icon">
+    <link href="/docs/5.3/assets/img/favicons/favicon.ico" rel="icon">
+    <meta content="#712cf9" name="theme-color">
+    <title>레이아웃 테스트</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .top {
+            height: 80px;
+            margin: 0;
+        }
+
+        .panel-container {
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            border: 1px solid silver;
+            overflow: hidden;
+        }
+
+        .panel-left {
+            width: 470px;
+            height: 90%;
+        }
+
+        .panel-right {
+            width: 100%;
+        }
+
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        .b-example-divider {
+            width: 100%;
+            height: 3rem;
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+
+        .b-example-vr {
+            flex-shrink: 0;
+            width: 1.5rem;
+            height: 100vh;
+        }
+
+        .bi {
+            vertical-align: -.125em;
+            fill: currentColor;
+        }
+
+        .nav-scroller {
+            position: relative;
+            z-index: 2;
+            height: 2.75rem;
+            overflow-y: hidden;
+        }
+
+        .nav-scroller .nav {
+            display: flex;
+            flex-wrap: nowrap;
+            padding-bottom: 1rem;
+            margin-top: -1px;
+            overflow-x: auto;
+            text-align: center;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .btn-bd-primary {
+            --bd-violet-bg: #712cf9;
+            --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+            --bs-btn-font-weight: 600;
+            --bs-btn-color: var(--bs-white);
+            --bs-btn-bg: var(--bd-violet-bg);
+            --bs-btn-border-color: var(--bd-violet-bg);
+            --bs-btn-hover-color: var(--bs-white);
+            --bs-btn-hover-bg: #6528e0;
+            --bs-btn-hover-border-color: #6528e0;
+            --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+            --bs-btn-active-color: var(--bs-btn-hover-color);
+            --bs-btn-active-bg: #5a23c8;
+            --bs-btn-active-border-color: #5a23c8;
+        }
+
+        .bd-mode-toggle {
+            z-index: 1500;
+        }
+        a {
+        text-decoration-line: none;
+        }
+        .area {
+        position: absolute;
+        background: #fff;
+        border: 1px solid #888;
+        border-radius: 3px;
+        font-size: 12px;
+        top: -5px;
+        left: 15px;
+        padding:2px;
+        }
+
+        .info {
+            font-size: 12px;
+            padding: 5px;
+        }
+        .info .title {
+            font-weight: bold;
+        }
+        .overlaybox {
+            position: relative;
+            display: inline-block;
+            background: #284a6e no-repeat;
+            padding: 10px;
+            border-radius: 10px;
+            color: #fff;
+        }
+        .wrap {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
+        .wrap * {padding: 0;margin: 0;}
+        .wrap .info {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
+        .wrap .info:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;}
+        .info .title {padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;}
+        .info .close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
+        .info .close:hover {cursor: pointer;}
+        .info .body {position: relative;overflow: hidden;}
+        .info .desc {position: relative;margin: 13px 0 0 90px;height: 75px;}
+        .desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+        .desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}
+        .info .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
+        .info:after {content: '';position: absolute;margin-left: -12px;left: 50%;bottom: 0;width: 22px;height: 12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+        .info .link {color: #5085BB;}
+        .map_wrap, .map_wrap * {margin:0; padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
+        .map_wrap {position:relative; height:1000px; max-height: 100%}
+        #category {position:absolute;top:10px;left:10px;border-radius: 5px; border:1px solid #909090;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);background: #fff;overflow: hidden;z-index: 2;}
+        #category li {float:left;list-style: none;width:50px; border-right:1px solid #acacac;padding:6px 0;text-align: center; cursor: pointer;}
+        #category li.on {background: #eee;}
+        #category li:hover {background: #ffe6e6;border-left:1px solid #acacac;margin-left: -1px;}
+        #category li:last-child{margin-right:0;border-right:0;}
+        #category li span {display: block;margin:0 auto 3px;width:27px;height: 28px;}
+        #category li .category_bg {background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_category.png) no-repeat;}
+        #category li .bank {background-position: -10px 0;}
+        #category li .mart {background-position: -10px -36px;}
+        #category li .pharmacy {background-position: -10px -72px;}
+        #category li .oil {background-position: -10px -108px;}
+        #category li .cafe {background-position: -10px -144px;}
+        #category li .store {background-position: -10px -180px;}
+        #category li.on .category_bg {background-position-x:-46px;}
+        .placeinfo_wrap {position:absolute;bottom:28px;left:-150px;width:300px;}
+        .placeinfo {position:relative;width:100%;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;padding-bottom: 10px;background: #fff;}
+        .placeinfo:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
+        .placeinfo_wrap .after {content:'';position:relative;margin-left:-12px;left:50%;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+        .placeinfo a, .placeinfo a:hover, .placeinfo a:active{color:#fff;text-decoration: none;}
+        .placeinfo a, .placeinfo span {display: block;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+        .placeinfo span {margin:5px 5px 0 5px;cursor: default;font-size:13px;}
+        .placeinfo .title {font-weight: bold; font-size:14px;border-radius: 6px 6px 0 0;margin: -1px -1px 0 -1px;padding:10px; color: #fff;background: #d95050;background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;}
+        .placeinfo .tel {color:#0f7833;}
+        .placeinfo .jibun {color:#999;font-size:11px;margin-top:0;}
+    </style>
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+          integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" rel="stylesheet">
+
+    <script crossorigin="anonymous"
+            integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script crossorigin="anonymous"
+            integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
+    <link href="/css/sidebars.css" rel="stylesheet">
+</head>
+
+<body>
+
+<header class="top">
+    <div clas="box2">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+
+                <a th:href="@{/list_main}" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
+                    <img src="/img/logo.png" style="width: 100px; height: 100px; margin-top: -10px;">
+                </a>
+
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li><a th:href="@{/map}" class="nav-link px-4 link-dark">지도</a></li>
+                    <li><a th:href="@{/real_estate_add}" class="nav-link px-4 link-dark">매물 등록</a></li>
+                    <li><a href="#" class="nav-link px-4 link-dark">부동산 가이드</a></li>
+                    <li><a th:href="@{/board_list}" class="nav-link px-4 link-dark">커뮤니티</a></li>
+                    <li><a th:href="@{/notice_list}" class="nav-link px-4 link-dark">공지사항</a></li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="panel-container">
+    <div class="panel-left">
+        <main class="d-flex flex-nowrap">
+            <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary">
+                <a class="d-flex align-items-center flex-shrink-0 p-3 link-body-emphasis text-decoration-none border-bottom"
+                   href="/">
+                    <svg class="bi pe-none me-2" height="24" width="30">
+                        <use xlink:href="#bootstrap"/>
+                    </svg>
+                    <span class="fs-5 fw-semibold">등록된 매물</span>
+                </a>
+
+                <div class="list-group list-group-flush border-bottom scrollarea" data-bs-smooth-scroll="true"
+                     data-bs-spy="scroll">
+
+                    <a aria-current="true" class="list-group-item list-group-item-action active d-flex"
+                       th:href="@{/real_estate_intro}">
+                        <div class="mb-1">
+                            <strong class="mb-1">월세 1000/150&nbsp;</strong><br>
+                            <strong class="col-10 mb-1 small" style="font-size: 13px;">서울특별시</strong><br>
+                            <strong class="col-10 mb-1 small" style="font-size: 13px;">서대문구 창천동</strong><br>
+                            <strong class="col-10 mb-1 small" style="font-size: 13px;">오피스텔 19.89m</strong><br>
+                            <strong class="col-10 mb-1 small" style="font-size: 13px;">5/6층</strong><br>
+                            <strong class="col-10 mb-1 small" style="font-size: 13px;">신축 컨디션 좋음</strong><br>
+                        </div>
+                        <div class="border">
+                            <img src="/img/img001.jpeg" style="width: 200px; height: 150px;">
+                        </div>
+                    </a>
+
+                    <a aria-current="true" class="list-group-item list-group-item-action d-flex"
+                       href="#list-item-1">
+                        <div class="mb-1">
+                            <strong class="mb-1">월세 1000/150&nbsp;</strong><br>
+                            <strong class="col-10 mb-1 small" style="font-size: 13px;">서울특별시</strong><br>
+                            <strong class="col-10 mb-1 small" style="font-size: 13px;">서대문구 창천동</strong><br>
+                            <strong class="col-10 mb-1 small" style="font-size: 13px;">오피스텔 19.89m</strong><br>
+                            <strong class="col-10 mb-1 small" style="font-size: 13px;">5/6층</strong><br>
+                            <strong class="col-10 mb-1 small" style="font-size: 13px;">신축 컨디션 좋음</strong><br>
+                        </div>
+                        <div class="border">
+                            <img src="/img/img001.jpeg" style="width: 200px; height: 150px;">
+                        </div>
+                    </a>
+
+                    <!-- <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1">월세 1000/150</strong>
+                        <small class="text-body-secondary">Tues</small>
+                    </div>
+                    <div class="col-10 mb-1 small">&nbsp;</div>
+                    <div class="col-10 mb-1 small">서울특별시 서대문구 창천동</div>
+                    <div class="col-10 mb-1 small">오피스텔 19.89m 5/6층</div>
+                    <div class="col-10 mb-1 small">신축 컨디션 좋음</div>
+                </a> -->
+                </div>
+                <br>
+                <div class="d-flex justify-content-center">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <li class="page-item"><a class="page-link" href="#">이전</a></li>
+                            <li class="page-item"><a class="page-link active" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">다음</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+        </main>
+    </div>
+    <div class="panel-right">
+        <div>
+            <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+                <div class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">지역 검색</div>
+                <button aria-controls="sidebarMenu" aria-expanded="false"
+                        aria-label="Toggle navigation" class="navbar-toggler position-absolute d-md-none collapsed"
+                        data-bs-target="#sidebarMenu" data-bs-toggle="collapse" type="button">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <input id="searchKeyword" aria-label="Search" class="form-control form-control-dark w-100 rounded-0 border-0"
+                       placeholder="지역을 검색해주세요." type="text">
+                <div class="navbar-nav">
+                    <div class="nav-item text-nowrap">
+                        <a id="searchButton" class="nav-link px-3">검색</a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="d-flex">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <span class="fs-5 fw-semibold">&nbsp;&nbsp;필터</span>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <form class="form-inline" method="get" action="/map_filter">
+                        <div class="input-group">
+                            <div style="width: 200px;">
+                                <select class="form-select form-select-lg mb-3" aria-label="Large select example" name="house_type">
+                                    <option value="전체" selecte>방 종류(전체)</option>
+                                    <option value="원룸">원룸</option>
+                                    <option value="투룸">투룸</option>
+                                    <option value="오피스텔">오피스텔</option>
+                                </select>
+                            </div>
+                            &nbsp;
+                            <div style="width: 200px;">
+                                <select class="form-select form-select-lg mb-3" aria-label="Large select example" name="deal_type">
+                                    <option value="전체" selected>거래 방법(전체)</option>
+                                    <option value="월세">월세</option>
+                                    <option value="전세">전세</option>
+                                </select>
+                            </div>
+                            &nbsp;
+                            <div style="width: 200px;">
+                                <select class="form-select form-select-lg mb-3" aria-label="Large select example" name="exclusive_area2" >
+                                    <option value="10000" selected>방크기(전체)</option>
+                                    <option value="33">0m²~33m² (10평 이하)</option>
+                                    <option value="66">33m²~66m² (20평 이하)</option>
+                                    <option value="99">66m²~99m²(30평 이하)</option>
+                                    <option value="130">130m² (40평 이하)</option>
+                                </select>
+                            </div>
+                            &nbsp;
+                            <div>
+                            <input type="submit" class="btn btn-secondary" id="btnCheck" style="height: 50px;"
+                                   value="적용">
+
+                                <input type="reset" class="btn btn-secondary" style="height: 50px;"
+                                       value="초기화">
+                            </div>
+                        </div>
+                    </form>                    <div>&nbsp;</div>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="map_wrap">
+            <div id="map" style="height: 1000px; max-height: 100%; position:relative; overflow:hidden;"></div>
+            <ul id="category">
+                <li id="BK9" data-order="0">
+                    <span class="category_bg bank"></span>
+                    은행
+                </li>
+                <li id="MT1" data-order="1">
+                    <span class="category_bg mart"></span>
+                    마트
+                </li>
+                <li id="PM9" data-order="2">
+                    <span class="category_bg pharmacy"></span>
+                    약국
+                </li>
+                <li id="OL7" data-order="3">
+                    <span class="category_bg oil"></span>
+                    주유소
+                </li>
+                <li id="CE7" data-order="4">
+                    <span class="category_bg cafe"></span>
+                    카페
+                </li>
+                <li id="CS2" data-order="5">
+                    <span class="category_bg store"></span>
+                    편의점
+                </li>
+            </ul>
+        </div>
+        <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=32361ca2351234bbec12d832140bcda0&libraries=services,clusterer"
+                type="text/javascript"></script>
+        <script src="http://code.jquery.com/jquery-latest.js"></script>
+
+        <script th:inline="javascript">
+        var map = null,
+            customOverlay = new kakao.maps.CustomOverlay({}),
+            polygons = [], // 다각형을 저장할 배열을 생성합니다.
+            markers = [], // 마커를 저장할 배열을 생성합니다.
+            kkoMap = {
+                initKko: function (o) {
+                    var e = o.mapId,
+                        t = document.getElementById(e),
+                        a = {
+                            center: new kakao.maps.LatLng(37.567509, 126.980663),
+                            level: 8,
+                        };
+                    (map = new kakao.maps.Map(t, a)),
+                        $.getJSON("/json/sigu.geojson", function (o) {
+                            let e = $(o.features);
+                            e.each(function () {
+                                kkoMap.getPolycode($(this)[0]);
+                            });
+                        });
+                },
+                getPolycode: function (o) {
+                    var e = [],
+                        t = o.geometry;
+                    if ("Polygon" == t.type) {
+                        var a = t.coordinates[0],
+                            n = {name: o.properties.adm_nm, path: []};
+                        for (var s in a)
+                            e.push({x: p[s][1], y: p[s][0]}),
+                                n.path.push(new kakao.maps.LatLng(a[s][1], a[s][0]));
+                        kkoMap.setPolygon(n, e);
+                    } else if ("MultiPolygon" == t.type)
+                        for (var s in t.coordinates) {
+                            var p = t.coordinates[s],
+                                n = {name: o.properties.adm_nm, path: []};
+                            for (var r in p[0])
+                                e.push({x: p[0][r][1], y: p[0][r][0]}),
+                                    n.path.push(new kakao.maps.LatLng(p[0][r][1], p[0][r][0]));
+                            kkoMap.setPolygon(n, e);
+                        }
+                },
+                searchPlace: function (keyword) {
+                    var ps = new kakao.maps.services.Places();
+
+                    ps.keywordSearch(keyword, function (data, status) {
+                        if (status === kakao.maps.services.Status.OK) {
+                            var place = data[0]; // 첫 번째 검색 결과를 사용
+                            var position = new kakao.maps.LatLng(place.y, place.x);
+
+                            // 검색 결과 위치 주변으로 지도 확대
+                            var level = 3; // 원하는 레벨로 조절
+                            map.setLevel(level, { anchor: position });
+
+                            map.panTo(position);
+                        }
+                    });
+                },
+                setPolygon: function (o, e) {
+                    var t = new kakao.maps.Polygon({
+                        name: o.name,
+                        path: o.path,
+                        strokeWeight: 2,
+                        strokeColor: "#004c80",
+                        strokeOpacity: 0.8,
+                        fillColor: "#fff",
+                        fillOpacity: 0.7,
+                    });
+                    kakao.maps.event.addListener(t, "mouseover", function (a) {
+                        t.setOptions({fillColor: "#09f"}),
+                            customOverlay.setPosition(kkoMap.centroid(e)),
+                            customOverlay.setContent(
+                                "<div class='overlaybox'>" + o.name + "</div>"
+                            ),
+                            customOverlay.setMap(map);
+                    }),
+                        kakao.maps.event.addListener(t, "mouseout", function () {
+                            t.setOptions({fillColor: "#fff"}), customOverlay.setMap(null);
+                        }),
+                        kakao.maps.event.addListener(t, "click", function () {
+                            customOverlay.setMap(null); // 정보 창(customOverlay)을 닫습니다.
+                            kkoMap.clearPolygons(); // 클릭한 다각형을 포함하여 모든 다각형을 지도에서 제거합니다.
+                            var center = kkoMap.centroid(e); // 클릭한 다각형의 중심 위치를 가져옵니다.
+                            var newLevel = map.getLevel() - 2; // 현재 레벨에서 2 레벨을 추가로 확대합니다.
+                            map.setLevel(newLevel, {anchor: center, animate: {duration: 350}}); // 클릭한 다각형의 중심을 기준으로 지도를 확대합니다.
+                        });
+                    t.setMap(map);
+
+                    polygons.push(t); // 다각형을 배열에 추가합니다.
+                },
+                clearPolygons: function () {
+                    // 배열에 저장된 모든 다각형을 지도에서 제거하는 함수입니다.
+                    for (var i = 0; i < polygons.length; i++) {
+                        polygons[i].setMap(null);
+                    }
+                    polygons = []; // 배열을 초기화합니다.
+                },
+                showCustomOverlay: function (position, markerData) {
+
+                    // 마커의 위치 변경해서 바로 위에 오버레이를 표시하도록 offset 값을 설정합니다.
+                    var overlayPosition = new kakao.maps.LatLng(position.getLat(), position.getLng());
+
+                    // 지도의 현재 레벨에 따라 오버레이의 위치를 조정합니다.
+                    var mapLevel = map.getLevel();
+                    if (mapLevel == 1) {
+                        overlayPosition = new kakao.maps.LatLng(position.getLat(), position.getLng() - 0.0004);
+                    } else if (mapLevel == 2) {
+                        overlayPosition = new kakao.maps.LatLng(position.getLat(), position.getLng() - 0.0008);
+                    } else if (mapLevel == 3) {
+                        overlayPosition = new kakao.maps.LatLng(position.getLat(), position.getLng() - 0.0016);
+                    } else if (mapLevel == 4) {
+                        overlayPosition = new kakao.maps.LatLng(position.getLat(), position.getLng() - 0.0032);
+                    } else if (mapLevel == 5) {
+                        overlayPosition = new kakao.maps.LatLng(position.getLat(), position.getLng() - 0.0064);
+                    } else if (mapLevel == 6) {
+                        overlayPosition = new kakao.maps.LatLng(position.getLat(), position.getLng() - 0.0128);
+                    }
+
+                    var mapname = null;
+
+                    if (markerData.deal_type == '월세') {
+                        mapname = markerData.deal_type + ': ' + markerData.deposit + '/' + markerData.m_price + "만원";
+                    } else if (markerData.deal_type == '전세') {
+                        mapname = markerData.deal_type + ': ' + markerData.y_price + "만원";
+                    }
+
+                    // 커스텀 오버레이 내용을 생성합니다.
+                    var content = '<div class="wrap">' +
+                        ' <div class="info">' +
+                        ' <div class="title">' +
+                        ' ' + mapname +
+                        ' <div class="close" onclick="kkoMap.closeCustomOverlay()" title="닫기"></div>' +
+                        ' </div>' +
+                        ' <div class="body">' +
+                        ' <div class="img">' +
+                        // ' <img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/thumnail.png" width="73" height="70">' +
+                        ' <img src="http://localhost:8082/images/' + markerData.save_name + '" width="73" height="70">' +
+                        ' </div>' +
+                        ' <div class="desc">' +
+                        ' <div class="ellipsis"> ' + markerData.road_address + '</div>' +
+                        ' <div class="jibun ellipsis"> ' + markerData.detail_address + '</div>' +
+                        ' <div><a href="#" target="_blank" class="link">매물 조회</a></div>' +
+                        ' </div>' +
+                        ' </div>' +
+                        ' </div>' +
+                        '</div>';
+
+                    // 커스텀 오버레이를 생성하고 설정한 위치에 표시합니다.
+                    customOverlay.setContent(content);
+                    customOverlay.setPosition(overlayPosition);
+                    customOverlay.setMap(map);
+
+                },
+                closeCustomOverlay: function () {
+                    // 커스텀 오버레이를 닫는 함수입니다.
+                    customOverlay.setMap(null);
+                },
+                // 커스텀 오버레이를 닫는 함수
+                closeAllCustomOverlays: function () {
+                    customOverlay.setMap(null);
+                },
+                centroid: function (o) {
+                    var e, t, a, n, s, p, r, i, l;
+                    for (e = 0, r = i = l = 0, t = (a = o.length) - 1; e < a; t = e++)
+                        (n = o[e]),
+                            (s = o[t]),
+                            (p = n.y * s.x - s.y * n.x),
+                            (i += (n.x + s.x) * p),
+                            (l += (n.y + s.y) * p),
+                            (r += 3 * p);
+                    return new kakao.maps.LatLng(i / r, l / r);
+                },
+                addMarkersFromList: function (markerList) {
+                    // 주어진 마커 리스트를 이용하여 마커를 생성하고 지도에 추가합니다.
+                    for (var i = 0; i < markerList.length; i++) {
+                        var markerData = markerList[i];
+                        var position = new kakao.maps.LatLng(markerData.latitude, markerData.longitude);
+                        kkoMap.addMarker(position, markerData);
+                    }
+                },
+
+                addMarker: function (position, markerData) {
+                    var marker = new kakao.maps.Marker({
+                        position: position,
+                    });
+                    markers.push(marker);
+                    marker.setMap(map);
+
+                    kakao.maps.event.addListener(marker, 'click', function () {
+                        kkoMap.showCustomOverlay(position, markerData);
+                    });
+                },
+                // 검색 버튼 클릭 시 실행될 함수를 등록
+                setupSearchButton: function () {
+                    var searchButton = document.getElementById('searchButton');
+                    var searchKeyword = document.getElementById('searchKeyword');
+
+                    // 검색 버튼 클릭 이벤트
+                    searchButton.addEventListener('click', function () {
+                        var keyword = searchKeyword.value;
+                        if (keyword) {
+                            kkoMap.searchPlace(keyword);
+                        }
+                    });
+
+                    // Enter 키를 눌렀을 때도 검색 가능하도록 이벤트 등록
+                    searchKeyword.addEventListener('keydown', function (e) {
+                        if (e.key === 'Enter') {
+                            var keyword = searchKeyword.value;
+                            if (keyword) {
+                                kkoMap.searchPlace(keyword);
+                            }
+                        }
+                    });
+                },
+                createMarkerClusterer: function () {
+                    // 마커 클러스터러를 생성하는 함수입니다.
+                    var clusterer = new kakao.maps.MarkerClusterer({
+                        map: map, // 마커들을 표시할 지도 객체
+                        markers: markers, // 마커 배열
+                        gridSize: 40, // 클러스터 간격
+                        averageCenter: true, // 클러스터의 중심을 평균값으로 설정
+                        minLevel: 7, // 클러스터 최소 레벨 표시
+                        minClusterSize: 1, // 한 개의 마커만 있어도 클러스터링 마커를 표시합니다.
+                        styles: [
+                            {
+                                width: '53px',
+                                height: '53px',
+                                background: 'rgba(103, 58, 183, 0.8)',
+                                borderRadius: '50%',
+                                textAlign: 'center',
+                                color: '#fff',
+                                fontSize: '15px',
+                                fontWeight: 'bold',
+                                lineHeight: '53px'
+                            },
+                            {
+                                width: '56px',
+                                height: '56px',
+                                background: 'rgba(103, 58, 183, 0.8)',
+                                borderRadius: '50%',
+                                textAlign: 'center',
+                                color: '#fff',
+                                fontSize: '15px',
+                                fontWeight: 'bold',
+                                lineHeight: '56px'
+                            },
+                            {
+                                width: '66px',
+                                height: '66px',
+                                background: 'rgba(103, 58, 183, 0.8)',
+                                borderRadius: '50%',
+                                textAlign: 'center',
+                                color: '#fff',
+                                fontSize: '15px',
+                                fontWeight: 'bold',
+                                lineHeight: '66px'
+                            },
+                            {
+                                width: '78px',
+                                height: '78px',
+                                background: 'rgba(103, 58, 183, 0.8)',
+                                borderRadius: '50%',
+                                textAlign: 'center',
+                                color: '#fff',
+                                fontSize: '15px',
+                                fontWeight: 'bold',
+                                lineHeight: '78px'
+                            }
+                        ],
+                    });
+                    kakao.maps.event.addListener(clusterer, 'clusterclick', function(cluster) {
+                        var markersInCluster = cluster.getMarkers();
+
+                        for (var i = 0; i < markersInCluster.length; i++) {
+                            var markerData = markersInCluster[i].getData();
+                            kakao.maps.event.addListener(clusterer, 'clusterclick', function(cluster) {
+                                console.log("asdfadsfasdfadsfdsafadsfdasfasfd");
+                                // 클러스터 내의 각 마커 데이터를 콘솔에 출력
+
+                            });
+
+                        }
+                    });
+                },
+            };
+
+        $(function () {
+            kkoMap.initKko({ mapId: "map" });
+            var sampleMarkers = /*[[${markers}]]*/; // 서버에서 전달받은 마커 리스트 데이터
+            kkoMap.addMarkersFromList(sampleMarkers);
+            kkoMap.createMarkerClusterer(); // 마커 클러스터러를 생성합니다.
+
+            // 지도 이벤트 리스너 추가
+            kakao.maps.event.addListener(map, 'zoom_changed', function () {
+                kkoMap.closeAllCustomOverlays(); // 확대/축소 시에 모든 커스텀 오버레이를 닫습니다.
+            });
+
+            // 검색 버튼 클릭 이벤트 설정
+            kkoMap.setupSearchButton();
+        });
+    </script>
+
+        <script>
+            // 마커를 클릭했을 때 해당 장소의 상세정보를 보여줄 커스텀오버레이입니다
+            var placeOverlay = new kakao.maps.CustomOverlay({zIndex:1}),
+                contentNode = document.createElement('div'), // 커스텀 오버레이의 컨텐츠 엘리먼트 입니다
+                markers = [], // 마커를 담을 배열입니다
+                currCategory = ''; // 현재 선택된 카테고리를 가지고 있을 변수입니다
+
+            var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+                mapOption = {
+                    center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
+                    level: 5 // 지도의 확대 레벨
+                };
+
+            // 지도를 생성합니다
+            var map = new kakao.maps.Map(mapContainer, mapOption);
+
+            // 장소 검색 객체를 생성합니다
+            var ps = new kakao.maps.services.Places(map);
+
+            // 지도에 idle 이벤트를 등록합니다
+            kakao.maps.event.addListener(map, 'idle', searchPlaces);
+
+            // 커스텀 오버레이의 컨텐츠 노드에 css class를 추가합니다
+            contentNode.className = 'placeinfo_wrap';
+
+            // 커스텀 오버레이의 컨텐츠 노드에 mousedown, touchstart 이벤트가 발생했을때
+            // 지도 객체에 이벤트가 전달되지 않도록 이벤트 핸들러로 kakao.maps.event.preventMap 메소드를 등록합니다
+            addEventHandle(contentNode, 'mousedown', kakao.maps.event.preventMap);
+            addEventHandle(contentNode, 'touchstart', kakao.maps.event.preventMap);
+
+            // 커스텀 오버레이 컨텐츠를 설정합니다
+            placeOverlay.setContent(contentNode);
+
+            // 각 카테고리에 클릭 이벤트를 등록합니다
+            addCategoryClickEvent();
+
+            // 엘리먼트에 이벤트 핸들러를 등록하는 함수입니다
+            function addEventHandle(target, type, callback) {
+                if (target.addEventListener) {
+                    target.addEventListener(type, callback);
+                } else {
+                    target.attachEvent('on' + type, callback);
+                }
+            }
+
+            // 카테고리 검색을 요청하는 함수입니다
+            function searchPlaces() {
+                if (!currCategory) {
+                    return;
+                }
+
+                // 커스텀 오버레이를 숨깁니다
+                placeOverlay.setMap(null);
+
+                // 지도에 표시되고 있는 마커를 제거합니다
+                removeMarker();
+
+                ps.categorySearch(currCategory, placesSearchCB, {useMapBounds:true});
+            }
+
+            // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
+            function placesSearchCB(data, status, pagination) {
+                if (status === kakao.maps.services.Status.OK) {
+
+                    // 정상적으로 검색이 완료됐으면 지도에 마커를 표출합니다
+                    displayPlaces(data);
+                } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+                    // 검색결과가 없는경우 해야할 처리가 있다면 이곳에 작성해 주세요
+
+                } else if (status === kakao.maps.services.Status.ERROR) {
+                    // 에러로 인해 검색결과가 나오지 않은 경우 해야할 처리가 있다면 이곳에 작성해 주세요
+
+                }
+            }
+
+            // 지도에 마커를 표출하는 함수입니다
+            function displayPlaces(places) {
+
+                // 몇번째 카테고리가 선택되어 있는지 얻어옵니다
+                // 이 순서는 스프라이트 이미지에서의 위치를 계산하는데 사용됩니다
+                var order = document.getElementById(currCategory).getAttribute('data-order');
+
+
+
+                for ( var i=0; i<places.length; i++ ) {
+
+                    // 마커를 생성하고 지도에 표시합니다
+                    var marker = addMarker(new kakao.maps.LatLng(places[i].y, places[i].x), order);
+
+                    // 마커와 검색결과 항목을 클릭 했을 때
+                    // 장소정보를 표출하도록 클릭 이벤트를 등록합니다
+                    (function(marker, place) {
+                        kakao.maps.event.addListener(marker, 'click', function() {
+                            displayPlaceInfo(place);
+                        });
+                    })(marker, places[i]);
+                }
+            }
+
+            // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
+            function addMarker(position, order) {
+                var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_category.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
+                    imageSize = new kakao.maps.Size(27, 28),  // 마커 이미지의 크기
+                    imgOptions =  {
+                        spriteSize : new kakao.maps.Size(72, 208), // 스프라이트 이미지의 크기
+                        spriteOrigin : new kakao.maps.Point(46, (order*36)), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+                        offset: new kakao.maps.Point(11, 28) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+                    },
+                    markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+                    marker = new kakao.maps.Marker({
+                        position: position, // 마커의 위치
+                        image: markerImage
+                    });
+
+                marker.setMap(map); // 지도 위에 마커를 표출합니다
+                markers.push(marker);  // 배열에 생성된 마커를 추가합니다
+
+                return marker;
+            }
+
+            // 지도 위에 표시되고 있는 마커를 모두 제거합니다
+            function removeMarker() {
+                for ( var i = 0; i < markers.length; i++ ) {
+                    markers[i].setMap(null);
+                }
+                markers = [];
+            }
+
+            // 클릭한 마커에 대한 장소 상세정보를 커스텀 오버레이로 표시하는 함수입니다
+            function displayPlaceInfo (place) {
+                var content = '<div class="placeinfo">' +
+                    '   <a class="title" href="' + place.place_url + '" target="_blank" title="' + place.place_name + '">' + place.place_name + '</a>';
+
+                if (place.road_address_name) {
+                    content += '    <span title="' + place.road_address_name + '">' + place.road_address_name + '</span>' +
+                        '  <span class="jibun" title="' + place.address_name + '">(지번 : ' + place.address_name + ')</span>';
+                }  else {
+                    content += '    <span title="' + place.address_name + '">' + place.address_name + '</span>';
+                }
+
+                content += '    <span class="tel">' + place.phone + '</span>' +
+                    '</div>' +
+                    '<div class="after"></div>';
+
+                contentNode.innerHTML = content;
+                placeOverlay.setPosition(new kakao.maps.LatLng(place.y, place.x));
+                placeOverlay.setMap(map);
+            }
+
+
+            // 각 카테고리에 클릭 이벤트를 등록합니다
+            function addCategoryClickEvent() {
+                var category = document.getElementById('category'),
+                    children = category.children;
+
+                for (var i=0; i<children.length; i++) {
+                    children[i].onclick = onClickCategory;
+                }
+            }
+
+            // 카테고리를 클릭했을 때 호출되는 함수입니다
+            function onClickCategory() {
+                var id = this.id,
+                    className = this.className;
+
+                placeOverlay.setMap(null);
+
+                if (className === 'on') {
+                    currCategory = '';
+                    changeCategoryClass();
+                    removeMarker();
+                } else {
+                    currCategory = id;
+                    changeCategoryClass(this);
+                    searchPlaces();
+                }
+            }
+
+            // 클릭된 카테고리에만 클릭된 스타일을 적용하는 함수입니다
+            function changeCategoryClass(el) {
+                var category = document.getElementById('category'),
+                    children = category.children,
+                    i;
+
+                for ( i=0; i<children.length; i++ ) {
+                    children[i].className = '';
+                }
+
+                if (el) {
+                    el.className = 'on';
+                }
+            }
+
+        </script>
+
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

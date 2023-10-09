@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>회원 상세 조회 테스트</title>
+</head>
+<body>
+    <table border="1">
+    <thead>
+    <tr>
+        <th>글번호</th>
+        <th>제목</th>
+        <th>이름</th>
+        <th>시간</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each = "list : ${list}">
+        <td th:text="${list.community_num}">1</td>
+        <td th:text="${list.community_title}">2</td>
+        <td th:text="${list.user_id}">3</td>
+        <td th:text="${list.community_date}">4</td>
+    </tr>
+    </tbody>
+    </table>
+</body>
+</html>

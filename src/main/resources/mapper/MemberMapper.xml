@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.thishouse.mapper.MemberMapper">
+    <!-- "select" 엘리먼트에서는 "id" 속성을 사용하여 메서드 이름을 지정 -->
+    <!-- "parameterType" 속성을 사용하여 매개변수의 타입을 지정 -->
+    <!-- "resultType" 속성을 사용하여 반환값의 타입을 지정 -->
+    <!-- 쿼리는 "member" 테이블에서 "user_id"가 #{id}와 일치하는 레코드의 개수를 반환하는 쿼리 -->
+    <!--회원 아이디 중복체크-->
+    <select id="idCk" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM member
+        WHERE user_id = #{user_id}
+    </select>
+    <!--회원 회원가입-->
+    <insert id="sign_up" parameterType="com.example.thishouse.domain.Member">
+        INSERT INTO member (user_id, user_pw, user_name,user_create_time)
+        VALUES
+        (#{user_id}, #{user_pw}, #{user_name},now())
+    </insert>
+    <!--회원 로그인-->
+    <select id="loginMember" parameterType="String" resultType="int">
+        SELECT count(*)
+        FROM member
+        WHERE user_id = #{user_id} and user_pw = #{user_pw}
+    </select>
+
+    <!--회원정보 상세조회-->
+    <select id="findInputMember" resultType="com.example.thishouse.domain.Member">
+        SELECT * 
+        FROM member
+        WHERE user_id = #{user_id}
+    </select>
+
+    <!--회원정보 수정-->
+    <update id="updateMember">
+        UPDATE member
+        SET
+        user_pw = #{user_pw},
+        user_name = #{user_name},
+        user_phone = #{user_phone}
+        WHERE user_id = #{user_id}
+    </update>
+
+    <!--회원 비밀번호 체크-->
+    <select id="pwCk" resultType="int">
+        SELECT COUNT(*)
+        FROM member
+        WHERE user_id = #{user_id} AND user_pw = #{user_pw}
+    </select>
+
+    <!--회원정보 삭제-->
+    <delete id="deleteMember">
+        DELETE FROM member
+        WHERE user_id = #{user_id}
+    </delete>
+
+    <!--회원 문의내역 조회-->
+    <select id="findInputMemberInquire" resultType="com.example.thishouse.domain.Inquire">
+        SELECT *
+        FROM inquire
+        WHERE user_id = #{user_id}
+        ORDER BY inquire_q_time asc;
+    </select>
+
+    <!--내가 쓴 게시글-->
+    <select id = "my_community" resultType="com.example.thishouse.domain.community.Community">
+        select *
+        from community
+        WHERE user_id = #{user_id}
+        limit 3
+    </select>
+
+    <!--회원 신고내역 조회-->
+    <select id ="findInputMemberReport" resultType="com.example.thishouse.domain.Report">
+        SELECT *
+        FROM report
+        WHERE user_id = #{user_id}
+    </select>
+
+    <!--문의사항 작성-->
+    <insert id="inquire_insert" parameterType="com.example.thishouse.domain.Inquire">
+        INSERT INTO Inquire (user_id,inquire_question,inquire_q_time,inquire_answer)
+        VALUES (#{user_id},#{inquire_question},now(),"답변 대기중 입니다.")
+    </insert>
+
+    <insert id="community_reply" parameterType="com.example.thishouse.domain.community.Community_reply">
+        INSERT INTO community_reply (community_num,user_id,reply_contents,reply_date)
+        values(#{community_num},#{user_id},#{reply_contents},now())
+    </insert>
+
+<!--need paging -->
+    <select id = "my_board_list" resultType="com.example.thishouse.domain.community.Community">
+        select *
+        from community
+        WHERE user_id = #{user_id}
+    </select>
+
+    <select id = "my_inquire_one" resultType="com.example.thishouse.domain.Inquire">
+        select *
+        from inquire
+        WHERE user_id = #{user_id}
+        order by inquire_q_time desc
+        limit 1
+    </select>
+
+<!--    <select id = "memberList_cnt" resultType="integer">-->
+<!--        select count(*)-->
+<!--        from member-->
+<!--    </select>-->
+
+<!--    <select id="memberAll" parameterType="com.example.thishouse.domain.Member" resultType="com.example.thishouse.domain.Member">-->
+<!--        select * from member Order by user_create_time desc LIMIT #{recordCountPerPage} OFFSET ${firstIndex}-->
+<!--    </select>-->
+
+<!--    <select id="member_search_cnt" parameterType="com.example.thishouse.domain.Member" resultType="int">-->
+<!--        select count(*) from member-->
+<!--        where user_name like CONCAT('%',#{search_content},'%')-->
+<!--        or user_id like CONCAT('%',#{search_content},'%')-->
+<!--        or user_phone like CONCAT('%',#{search_content},'%')-->
+<!--    </select>-->
+
+<!--    <select id="member_list_search" parameterType="com.example.thishouse.domain.Member" resultType="com.example.thishouse.domain.Member">-->
+<!--        select *-->
+<!--        from member-->
+<!--        where user_name like CONCAT('%',#{search_content},'%')-->
+<!--           or user_id like CONCAT('%',#{search_content},'%')-->
+<!--           or user_phone like CONCAT('%',#{search_content},'%')-->
+<!--        order by community_num desc-->
+<!--            limit ${recordCountPerPage} offset ${firstIndex}-->
+<!--    </select>-->
+
+</mapper>

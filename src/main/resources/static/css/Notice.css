@@ -1,0 +1,140 @@
+@charset "UTF-8";
+
+.outer {
+	width: 1200px;
+	margin: auto;
+}
+
+.wrap {
+	width: 1200px;
+	margin: 50px auto;
+}
+
+ul, li {
+	margin: 0;
+	padding: 0;
+}
+
+.board_title {
+	border-bottom: 1px solid #282A35;
+}
+
+.board_list {
+	margin: 20px 30px;
+	min-height: 600px;
+}
+
+.board_list>ul {
+	border-bottom: 1px solid #f3f5f7;
+	height: 50px;
+	line-height: 50px;
+	display: flex;
+	justify-content: space-around;
+	list-style: none;
+}
+
+.board_list>ul.last {
+	border: 0;
+}
+
+.board_list>ul>li {
+	text-align: center;
+}
+
+.board_header {
+	background: #282A35;
+	color: white;
+	font-weight: bold;
+}
+
+.board_list .id {
+	width: 60px;
+}
+
+.board_list .category {
+	width: 60px;
+}
+
+.board_list .title {
+	width: 350px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.board_list .writer {
+	width: 80px;
+}
+
+.board_list .count {
+	width: 60px;
+}
+
+.board_list .date {
+	width: 100px;
+}
+
+.onmouseover {
+	background: #f3f5f7;
+	cursor: pointer;
+}
+
+.board_paging {
+	height: 50px;
+	line-height: 50px;
+	display: flex;
+	justify-content: center;
+	list-style: none;
+	width: 1200px;
+	margin: auto;
+}
+
+.board_paging a {
+	text-decoration: none;
+	color: #282A35;
+	width: 40px;
+	display: block;
+	text-align: center;
+}
+
+.board_paging a.current_page {
+	border-bottom: 2px solid #282A35;
+	font-weight: bold;
+}
+
+.search_area {
+	text-align: center;
+	padding: 30px;
+}
+
+.search_area select {
+	width: 150px;
+	height: 30px;
+	border: 0px;
+}
+
+.input_area {
+	border: solid 1px #dadada;
+	padding: 10px 10px 14px 10px;
+	margin-right: 20px;
+	background: white;
+}
+
+.input_area input {
+	width: 250px;
+	height: 30px;
+	border: 0px;
+}
+
+.input_area input:focus, .search_area select:focus {
+	outline: none;
+}
+
+.search_area button {
+	width: 100px;
+	height: 35px;
+	border: 0px;
+	color: white;
+	background: #282A35;
+	margin: 5px;
+}

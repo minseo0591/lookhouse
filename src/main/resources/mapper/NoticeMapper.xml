@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.thishouse.mapper.NoticeMapper">
+    <!--qry-->
+    <select id="notice_list" resultType="com.example.thishouse.domain.Notice">
+        SELECT * FROM notice
+    </select>
+    <!--    페이징   -->
+    <select id="pg_list" parameterType="com.example.thishouse.domain.Notice" resultType="com.example.thishouse.domain.Notice">
+        select * from notice Order by notice_num desc LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+    </select>
+    <select id="pg_listCnt" resultType="int"> select count(*) from notice
+    </select>
+    <!-- 제목, 작성자, 내용 검색   -->
+    <select id="pg_list_search" parameterType="com.example.thishouse.domain.Notice" resultType="com.example.thishouse.domain.Notice">
+        select *
+        from notice
+        where ${search_name} like CONCAT('%',#{search_content},'%')
+        order by notice_num desc
+        limit ${recordCountPerPage} offset ${firstIndex}
+    </select>
+    <select id="pg_list_searchcnt" parameterType="com.example.thishouse.domain.Notice" resultType="int">
+        select count(*)
+        from notice
+        where ${search_name} like CONCAT('%',#{search_content},'%')
+    </select>
+    <!--게시판 상세조회-->
+    <select id="view_notice" resultType="com.example.thishouse.domain.Notice">
+        select *
+        from notice
+        where notice_num = #{notice_num}
+    </select>
+
+    <!-- 게시판 조회수 -->
+    <update id="update_notice_hitCount">
+        update notice
+        SET
+        notice_hit=notice_hit+1
+        where
+        notice_num=#{notice_num_num}
+    </update>
+
+
+    <!-- 공지사항 작성 -->
+    <insert id="insert_notice" parameterType="com.example.thishouse.domain.Notice">
+        insert into notice(admin_id, notice_title, notice_content, notice_date, notice_hit)
+        values ('pmJ', #{notice_title}, #{notice_content}, now(), 0)
+    </insert>
+
+
+    <!-- 공지사항 삭제   -->
+    <delete id="delete_notice">
+        delete from notice where notice_num = #{notice_num}
+    </delete>
+    <!--   공지사항 수정   -->
+    <update id="update_notice">
+        update notice
+        SET
+        notice_title = #{notice_title},
+        admin_id = 'pmJ',
+        notice_content = #{notice_content},
+        notice_date = now()
+        where
+        notice_num = #{notice_num}
+    </update>
+    <!--   공지사항 검색  -->
+    <select id="notice_search">
+        select * from notice where #{서치.옵션변수} like '%#{서치.텍스트변수}%'
+    </select>
+</mapper>

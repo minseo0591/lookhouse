@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>회원 상세 조회 테스트</title>
+</head>
+<body>
+    <table border="1">
+    <thead>
+    <tr>
+        <th>회원아이디</th>
+        <th>회원비밀번호</th>
+        <th>회원이름</th>
+        <th>회원핸드폰</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td th:text="${Member.user_id}">1</td>
+        <td th:text="${Member.user_pw}">2</td>
+        <td th:text="${Member.user_name}">3</td>
+        <td th:text="${Member.user_phone}">4</td>
+    </tr>
+    </tbody>
+    </table>
+</body>
+</html>

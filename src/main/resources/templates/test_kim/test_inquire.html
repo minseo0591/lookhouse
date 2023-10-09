@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" >
+<head>
+  <meta charset="UTF-8">
+  <title>회원 상세 조회 테스트</title>
+</head>
+<body>
+<table border="1">
+  <thead>
+  <tr>
+    <th>글번호</th>
+    <th>제목</th>
+    <th>질문</th>
+    <th>시간</th>
+    <th>답변</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each = "my_inquire : ${my_inquire}">
+    <td th:text="${my_inquire.inquire_num}">1</td>
+    <td th:text="${my_inquire.user_id}">2</td>
+    <td th:text="${my_inquire.inquire_question}">3</td>
+    <td th:text="${my_inquire.inquire_q_time}">4</td>
+    <td th:text="${my_inquire.inquire_answer}">5</td>
+
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

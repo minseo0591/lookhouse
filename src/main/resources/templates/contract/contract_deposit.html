@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>계약 상태</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./css/footer.css" />
+    <link href="/css/contract_in.css" rel="stylesheet">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        .b-example-divider {
+            height: 3rem;
+            background-color: rgba(0, 0, 0, .1);
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+
+        .b-example-vr {
+            flex-shrink: 0;
+            width: 1.5rem;
+            height: 100vh;
+        }
+
+        .bi {
+            vertical-align: -.125em;
+            fill: currentColor;
+        }
+
+        .nav-scroller {
+            position: relative;
+            z-index: 2;
+            height: 2.75rem;
+            overflow-y: hidden;
+        }
+
+        .nav-scroller .nav {
+            display: flex;
+            flex-wrap: nowrap;
+            padding-bottom: 1rem;
+            margin-top: -1px;
+            overflow-x: auto;
+            text-align: center;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+    </style>
+
+
+</head>
+
+<body>
+<!-- header 시작 -->
+<header th:replace="~{header/header}"></header>
+<!-- header 끝 -->
+    <main>
+        <div class="container py-4">
+            <div class="p-3 mb-4 bg-light rounded-3">
+                <div class="container-fluid py-5">
+                    <h1 class="display-5 fw-bold text-muted">계약 정보</h1>
+                    <div>&nbsp;</div>
+
+                    <div class="d-flex">
+                        <div class="p-2 w-75 fs-3 fw-bold">계약 체결 완료</div>
+                        <div class="p-2 flex-shrink-1 fs-5 fw-bold">계약번호 :
+                            <span class="text-muted">1234-123</span>
+                        </div>
+                    </div>
+
+                    <div>&nbsp;</div>
+
+                    <div class="d-flex">
+                        <div class="p-2 w-75 fw-bold text-muted">
+                            <p>계약금 입금이 확인되었습니다. <br>
+                                임대인으로부터 잔금 입금 여부를 확인 후, 내역을 등록해 주세요.</p>
+                        </div>
+                        <div class="p-2 flex-shrink-1 fs-5 fw-bold justify-content-center align-content-center">
+                            <div class="dropdown position-relative">
+                                <span class="nav-icon font-2xl dropdown" href="#" id="notificationDropdown"
+                                    data-bs-toggle="dropdown" aria-expanded="false"
+                                    style="cursor: pointer; position: relative;">
+                                    <div class="position-relative">
+                                        <button type="button" class="btn btn-primary position-relative"
+                                            style="height:45px; width: 200px;">
+                                            잔금 입금 내역 등록
+                                        </button>
+                                    </div>
+                                </span>
+                                <ul class="dropdown-menu dropdown-menu-end p-0 border-0 w-400"
+                                    aria-labelledby="notificationDropdown" data-bs-auto-close="false">
+                                    <div class="card" style="width: 450px;">
+                                        <div class="card-header text-center">
+                                            <b>잔금 입금 내역 등록</b>
+                                            <div>&nbsp;</div>
+                                            <div class="text-center">
+                                                <span class="text-muted" style="font-size: 13px;">임차인으로부터 입금일 정보가
+                                                    수신되었습니다.</span> <br>
+                                                <span class="text-muted" style="font-size: 13px;">임대인에게 확인한 입금일 정보와 일치할
+                                                    경우</span> <br>
+                                                <span class="text-muted" style="font-size: 13px;">확인 버튼을 눌러주세요.</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="perfect-scrollbar position-relative"
+                                            style="max-height: 500px; padding-top: 10px; padding-bottom: 10px; padding-left: 15px; padding-right: 15px;"
+                                            data-bs-auto-close="false">
+
+                                            <div class="align-items-center d-grid gap-2 col-10 mx-auto">
+                                                &nbsp;
+                                                <input type="date" class="form-control" value="2023-08-25">
+                                                &nbsp;
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            class="border align-items-center d-grid gap-2 col-10 mx-auto text-center bg-secondary bg-gradient bg-opacity-10">
+                                            &nbsp;
+                                            <span class="text-dark fw-bold" style="font-size: 20px;">금액</span>
+                                            <p class="fw-bold text-primary" style="font-size: 30px;">180,000,000원</p>
+                                            <span class="text-muted fw-bold">일억팔천만원</span>
+                                            &nbsp;
+                                        </div>
+
+
+                                        <div class="card-footer text-center border-0">
+                                            <hr>
+                                            <button class="btn btn-secondary">
+                                                닫기
+                                            </button>
+                                            <button class="btn btn-primary">
+                                                확인
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row align-items-md-stretch">
+                <h2 class="fw-bold">매물정보</h2>
+                <div>&nbsp;</div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="well-left">
+                            <div class="single-well">
+                                <a href="#">
+                                    <img src="/img/1.jpg">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="well-middle">
+                            <div class="single-well">
+                                <a href="#">
+                                    <h4 class="sec-head">계약 정보</h4>
+                                </a>
+                                <p>
+                                    <b class="text-success">계약 체결 완료</b>
+                                </p>
+                                <hr>
+                                <ul>
+                                    <li>
+                                        <i class="bi bi-check"></i> <b>분류 :</b> 다세대/원룸
+                                    </li>
+                                    <li>
+                                        <i class="bi bi-check"></i> <b>면적 :</b> 전용 15.22 m<sup>2</sup> / 공급 20.13
+                                        m<sup>2</sup>
+                                        <button class="btn btn-sm btn-primary"><i
+                                                class="bi bi-arrow-repeat"></i>평</button>
+                                    </li>
+                                    <li>
+                                        <i class="bi bi-check"></i> <b>주소 :</b> 서울 관악구 신림로1가 3 505호(신림동,신림빌라)
+                                    </li>
+                                    <li>
+                                        <i class="bi bi-check"></i> <b>관련서류 :</b> 등기부등본 <i
+                                            class="bi bi-box-arrow-up-right"></i> 건축물대장 <i
+                                            class="bi bi-box-arrow-up-right"></i>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- End col-->
+
+            </div>
+        </div>
+    </main>
+<!-- footer 시작 -->
+<footer th:replace="~{footer/footer}"></footer>
+<!-- footer 끝 -->
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+        integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

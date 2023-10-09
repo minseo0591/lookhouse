@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/logo_icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/logo_icon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/logo_icon.png">
+    <link rel="mask-icon" href="/img/logo_icon.png" color="#262521">
+    <link rel="shortcut icon" href="/img/logo_icon.png">
+    <meta name="msapplication-TileColor" content="#faa700">
+    <meta name="theme-color" content="#ffffff">
+
+    <meta property="og:title" content="Morioh Responsive Template with Bootstrap 4, HTML5 and Vue.js">
+    <meta property="og:image" content="/img/logo_icon.png">
+    <meta property="og:description" content="Morioh Theme is Bootstrap responsive template free download">
+    <meta property="og:image:width" content="1280">
+    <meta property="og:image:height" content="720">
+
+    <title>관리자 페이지</title>
+    <meta itemprop="description" content="Morioh Theme is Bootstrap responsive template free download">
+    <meta itemprop="image" content="/img/logo_icon.png">
+
+    <meta name="description" content="Morioh Theme is Bootstrap responsive template free download">
+    <meta name="image" content="/img/logo_icon.png">
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.4.0/css/perfect-scrollbar.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@4.7.95/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css">
+    <!-- jquery UI CSS파일 -->
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />
+    <!-- jquery 기본 js 파일 -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- jquery UI 라이브러리 js파일 -->
+    <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="/css/morioh.css">
+
+    <script>
+
+        $(document).ready(function() {
+            var thisIndex = parseInt([[${searchVO.pageIndex}]]);
+
+            $(".pagination li a").each(function() {
+                var idx = $(this).parent().index();
+                var thistitle = $(this).attr("title");
+
+                if (thistitle === thisIndex.toString()) {
+                    $(".pagination").find("li").eq(idx).addClass("active");
+                }
+            });
+        });
+
+
+
+
+        function fn_go_page(pageNo) {
+            $("#pageIndex").val(pageNo);
+            $("#listForm").submit();
+            return false;
+        }
+
+        function fn_search(){
+            $("#pageIndex").val("1");
+            $("#listForm").submit();
+            return false;
+        }
+
+    </script>
+
+</head>
+
+<body class="menubar-enabled navbar-top-fixed">
+
+<!-- header 시작 -->
+<header th:replace="~{header/Admin_header}"></header>
+<!-- header 끝 -->
+
+
+<div class="row">
+    <div class="col-lg-13 col-md-12">
+        <div class="card mb-15">
+            <div class="table-responsive">
+                <br>
+                <h5 style="text-align:center"><b>회원 권한부여/검색</b></h5>
+                <h6 style="font-size: 15px; color:gray; text-align:center">총 관리자 권한이 있는 대상만 회원 권한부여/조회 할 수 있습니다.
+                </h6>
+                <br>
+                <form class="form-inline" method="get" action="/Members_Search">
+                    <div class="input-group">
+                        <input class="form-control" type="search" name="searchValue"
+                               placeholder="회원의 이메일 또는 닉네임으로 검색하여 추가할 수 있습니다." aria-label="Search">
+                        <button class="btn btn-outline-primary" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+                <table class="table">
+
+                    <thead>
+                    <tr>
+                        <th class="text-center">회원번호</th>
+                        <th class="text-center">이름</th>
+                        <th class="text-center">아이디</th>
+                        <th class="text-center">연락처</th>
+                        <th class="text-center">날짜</th>
+                        <th class="text-center">관리</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="memberList : ${memberList}">
+                        <td class="text-center"  th:text="${memberList.user_num}">
+                            idx
+                        </td>
+                        <td class="text-center"  th:text="${memberList.user_name}">
+                            NAME
+                        </td>
+
+                        <td class="text-center"  th:text="${memberList.user_id}">
+                            ID
+                        </td>
+
+                        <td class="text-center"  th:text="${memberList.user_phone}">
+                            NUM
+                        </td>
+
+
+                        <td class="text-center">
+                                        <span class="badge bg-primary"  th:text="${memberList.user_create_time}">
+                                            2023-05-16
+                                        </span>
+                        </td>
+
+                        <td class="text-center">
+                            <div class="btn-group">
+                                <button type="button" class="btn" data-bs-toggle="dropdown"
+                                        data-bs-display="static" aria-expanded="false">
+                                    <i class="mdi mdi-dots-horizontal"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-lg-end">
+                                    <li><button class="dropdown-item" type="button">수정</button></li>
+                                    <li>  <a th:href="@{'/member_delete?user_num=' + ${memberList.user_num}}">
+                                        <button class="dropdown-item" type="button">
+                                            삭제</button></a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+
+
+                    <!--                                <tr>-->
+                    <!--                                    <td class="text-center">-->
+                    <!--                                        일반 회원-->
+                    <!--                                    </td>-->
+
+                    <!--                                    <td class="text-center">-->
+                    <!--                                        neha******@gmail.com-->
+                    <!--                                    </td>-->
+
+                    <!--                                    <td class="text-center">-->
+                    <!--                                        공선환-->
+                    <!--                                    </td>-->
+
+
+                    <!--                                    <td class="text-center">-->
+                    <!--                                        <span class="badge bg-primary">2023-05-16</span>-->
+                    <!--                                    </td>-->
+
+                    <!--                                    <td class="text-center">-->
+                    <!--                                        <div class="btn-group">-->
+                    <!--                                            <button type="button" class="btn" data-bs-toggle="dropdown"-->
+                    <!--                                                data-bs-display="static" aria-expanded="false">-->
+                    <!--                                                <i class="mdi mdi-dots-horizontal"></i>-->
+                    <!--                                            </button>-->
+                    <!--                                            <ul class="dropdown-menu dropdown-menu-lg-end">-->
+                    <!--                                                <li><button class="dropdown-item" type="button">수정</button></li>-->
+                    <!--                                                <li><button class="dropdown-item" type="button">삭제</button></li>-->
+                    <!--                                            </ul>-->
+                    <!--                                        </div>-->
+                    <!--                                    </td>-->
+                    <!--                                </tr>-->
+
+                    </tbody>
+                </table>
+            </div>
+            <!--                    <nav aria-label="Page navigation example">-->
+            <!--                        <ul class="pagination" style="justify-content: center;">-->
+            <!--                            <li class="page-item">-->
+            <!--                                <a class="page-link" href="#" aria-label="Previous">-->
+            <!--                                    <span aria-hidden="true">&laquo;</span>-->
+            <!--                                </a>-->
+            <!--                            </li>-->
+            <!--                            <li class="page-item"><a class="page-link" href="#">1</a></li>-->
+            <!--                            <li class="page-item"><a class="page-link" href="#">2</a></li>-->
+            <!--                            <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+            <!--                            <li class="page-item">-->
+            <!--                                <a class="page-link" href="#" aria-label="Next">-->
+            <!--                                    <span aria-hidden="true">&raquo;</span>-->
+            <!--                                </a>-->
+            <!--                            </li>-->
+            <!--                        </ul>-->
+            <!--                    </nav>-->
+
+            <form method="get" id="listForm" action="/Members_Search">
+                <input type="hidden" id="pageIndex" name="pageIndex" val="" />
+                <div class="col-sm-12 col-md-7" style="text-align:center; margin: 0 auto;"> <!-- 가운데 정렬 스타일을 추가 -->
+                    <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
+                        <ul class="pagination justify-content-center" style="align:center;">
+                            <li th:if="${searchVO.prev}" class="paginate_button page-item previous" id="dataTable_previous">
+                                <a href="javascript:void(0);" th:onclick="'fn_go_page(' + ${searchVO.startDate - 1} + '); return false;'" aria-controls="dataTable" data-dt-idx="0" tabindex="0" class="page-link">이전</a>
+                            </li>
+                            <li th:each="num: ${#numbers.sequence(searchVO.startDate,searchVO.endDate)}" class="paginate_button page-item">
+                                <a href="javascript:void(0);" th:text="${num}" th:onclick="'fn_go_page(' + ${num} + '); return false;'" aria-controls="dataTable" data-dt-idx="0" tabindex="0" class="page-link" th:title="${num}">d</a>
+                            </li>
+                            <li th:if="${searchVO.next}" class="paginate_button page-item next" id="dataTable_next">
+                                <a href="javascript:void(0);" th:onclick="'fn_go_page(' + ${searchVO.endDate + 1} + '); return false;'" aria-controls="dataTable" data-dt-idx="0" tabindex="0" class="page-link">다음</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.4.0/dist/perfect-scrollbar.min.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-50750921-19"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-50750921-19');
+</script>
+
+
+
+<script src="/js/morioh.js"></script>
+
+
+</body>+
+
+</html>
